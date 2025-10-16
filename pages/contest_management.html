@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contest Management - Local Coding Contest Platform</title>
+    <link rel="stylesheet" href="../css/main.css">
+  <script type="module" src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Flocalcodi4388back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.9"></script>
+  <script type="module" src="https://static.rocket.new/rocket-shot.js?v=0.0.1"></script>
+  </head>
+<body class="bg-background min-h-screen font-sans">
+    <!-- Navigation Header -->
+    <nav class="bg-surface shadow-card border-b border-secondary-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-4">
+                    <div class="flex-shrink-0">
+                        <svg class="h-8 w-8 text-primary" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                        </svg>
+                    </div>
+                    <h1 class="text-xl font-semibold text-text-primary">Contest Platform</h1>
+                </div>
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="contest_setup.html" class="text-text-secondary hover:text-primary transition-smooth px-3 py-2 rounded-lg hover:bg-secondary-100">Setup</a>
+                    <a href="contest_management.html" class="text-primary font-medium px-3 py-2 rounded-lg bg-primary-50">Management</a>
+                    <a href="participant_join.html" class="text-text-secondary hover:text-primary transition-smooth px-3 py-2 rounded-lg hover:bg-secondary-100">Join Contest</a>
+                    <a href="submission_dashboard.html" class="text-text-secondary hover:text-primary transition-smooth px-3 py-2 rounded-lg hover:bg-secondary-100">Dashboard</a>
+                    <a href="plagiarism_analysis.html" class="text-text-secondary hover:text-primary transition-smooth px-3 py-2 rounded-lg hover:bg-secondary-100">Analysis</a>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-text-secondary hover:text-primary p-2">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-surface border-t border-secondary-200">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="contest_setup.html" class="block px-3 py-2 text-text-secondary hover:text-primary hover:bg-secondary-100 rounded-lg">Setup</a>
+                <a href="contest_management.html" class="block px-3 py-2 text-primary font-medium bg-primary-50 rounded-lg">Management</a>
+                <a href="participant_join.html" class="block px-3 py-2 text-text-secondary hover:text-primary hover:bg-secondary-100 rounded-lg">Join Contest</a>
+                <a href="submission_dashboard.html" class="block px-3 py-2 text-text-secondary hover:text-primary hover:bg-secondary-100 rounded-lg">Dashboard</a>
+                <a href="plagiarism_analysis.html" class="block px-3 py-2 text-text-secondary hover:text-primary hover:bg-secondary-100 rounded-lg">Analysis</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contest Status Header -->
+    <div class="bg-surface border-b border-secondary-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div class="flex items-center space-x-4">
+                    <div class="status-dot connected"></div>
+                    <div>
+                        <h2 class="text-xl font-semibold text-text-primary">Algorithm Challenge 2025</h2>
+                        <p class="text-text-secondary text-sm">Started at 2:30 PM • 1h 45m remaining</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <button id="send-message-btn" class="px-4 py-2 bg-accent text-white rounded-lg hover:bg-accent-600 transition-smooth">
+                        <svg class="h-4 w-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                        </svg>
+                        Send Message
+                    </button>
+                    <button id="stop-contest-btn" class="px-4 py-2 bg-error text-white rounded-lg hover:bg-error-600 transition-smooth">
+                        <svg class="h-4 w-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"/>
+                        </svg>
+                        Stop Contest
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Statistics Dashboard -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-surface rounded-xl shadow-card border border-secondary-200 p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-text-secondary text-sm font-medium">Active Participants</p>
+                        <p class="text-2xl font-semibold text-text-primary mt-1">12</p>
+                    </div>
+                    <div class="p-3 bg-primary-100 rounded-lg">
+                        <svg class="h-6 w-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <div class="flex items-center text-sm">
+                        <span class="text-success font-medium">+3</span>
+                        <span class="text-text-secondary ml-1">since last hour</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-surface rounded-xl shadow-card border border-secondary-200 p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-text-secondary text-sm font-medium">Total Submissions</p>
+                        <p class="text-2xl font-semibold text-text-primary mt-1">47</p>
+                    </div>
+                    <div class="p-3 bg-accent-100 rounded-lg">
+                        <svg class="h-6 w-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <div class="flex items-center text-sm">
+                        <span class="text-success font-medium">+8</span>
+                        <span class="text-text-secondary ml-1">in last 10 minutes</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-surface rounded-xl shadow-card border border-secondary-200 p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-text-secondary text-sm font-medium">Problems Solved</p>
+                        <p class="text-2xl font-semibold text-text-primary mt-1">23</p>
+                    </div>
+                    <div class="p-3 bg-success-100 rounded-lg">
+                        <svg class="h-6 w-6 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <div class="flex items-center text-sm">
+                        <span class="text-text-secondary">49% completion rate</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-surface rounded-xl shadow-card border border-secondary-200 p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-text-secondary text-sm font-medium">Average Score</p>
+                        <p class="text-2xl font-semibold text-text-primary mt-1">78.5</p>
+                    </div>
+                    <div class="p-3 bg-warning-100 rounded-lg">
+                        <svg class="h-6 w-6 text-warning" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <div class="flex items-center text-sm">
+                        <span class="text-success font-medium">+5.2</span>
+                        <span class="text-text-secondary ml-1">from last contest</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Tab Navigation -->
+        <div class="md:hidden mb-6">
+            <div class="flex space-x-1 bg-secondary-100 p-1 rounded-lg">
+                <button class="tab-btn active flex-1 px-3 py-2 text-sm font-medium rounded-md transition-smooth" data-tab="participants">
+                    Participants
+                </button>
+                <button class="tab-btn flex-1 px-3 py-2 text-sm font-medium rounded-md transition-smooth" data-tab="submissions">
+                    Submissions
+                </button>
+                <button class="tab-btn flex-1 px-3 py-2 text-sm font-medium rounded-md transition-smooth" data-tab="connection">
+                    Connection
+                </button>
+            </div>
+        </div>
+
+        <!-- Desktop Layout / Mobile Tab Content -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Participants Panel -->
+            <div id="participants-panel" class="lg:col-span-2 tab-content">
+                <div class="bg-surface rounded-xl shadow-card border border-secondary-200">
+                    <div class="p-6 border-b border-secondary-200">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-lg font-semibold text-text-primary">Active Participants</h3>
+                            <div class="flex items-center space-x-3">
+                                <button id="refresh-participants" class="p-2 text-text-secondary hover:text-primary transition-smooth">
+                                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                                    </svg>
+                                </button>
+                                <button id="download-submissions" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-700 transition-smooth">
+                                    <svg class="h-4 w-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                    </svg>
+                                    Download All
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-secondary-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">Participant</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">Status</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">Submissions</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">Last Activity</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-surface divide-y divide-secondary-200">
+                                <tr class="hover:bg-secondary-50 transition-smooth">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <img class="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1710604885283-b598ca251936" alt="Profile picture of Alex Chen" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;">
+                                            <div class="ml-3">
+                                                <p class="text-sm font-medium text-text-primary">Alex Chen</p>
+                                                <p class="text-sm text-text-secondary">192.168.1.105</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="status-dot connected mr-2"></div>
+                                            <span class="text-sm text-success font-medium">Connected</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 py-1 text-xs font-medium bg-primary-100 text-primary rounded-full">5 files</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-text-secondary">
+                                        2 minutes ago
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        <button class="text-primary hover:text-primary-700 mr-3">View</button>
+                                        <button class="text-error hover:text-error-600">Kick</button>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-secondary-50 transition-smooth">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <img class="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1592831383329-23d79a212006" alt="Profile picture of Sarah Johnson" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;">
+                                            <div class="ml-3">
+                                                <p class="text-sm font-medium text-text-primary">Sarah Johnson</p>
+                                                <p class="text-sm text-text-secondary">192.168.1.108</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="status-dot connected mr-2"></div>
+                                            <span class="text-sm text-success font-medium">Connected</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 py-1 text-xs font-medium bg-primary-100 text-primary rounded-full">3 files</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-text-secondary">
+                                        5 minutes ago
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        <button class="text-primary hover:text-primary-700 mr-3">View</button>
+                                        <button class="text-error hover:text-error-600">Kick</button>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-secondary-50 transition-smooth">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <img class="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1531680253207-46986a7d3fef" alt="Profile picture of Mike Rodriguez" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;">
+                                            <div class="ml-3">
+                                                <p class="text-sm font-medium text-text-primary">Mike Rodriguez</p>
+                                                <p class="text-sm text-text-secondary">192.168.1.112</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="status-dot connecting mr-2"></div>
+                                            <span class="text-sm text-warning font-medium">Reconnecting</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 py-1 text-xs font-medium bg-secondary-100 text-text-secondary rounded-full">2 files</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-text-secondary">
+                                        8 minutes ago
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        <button class="text-primary hover:text-primary-700 mr-3">View</button>
+                                        <button class="text-error hover:text-error-600">Kick</button>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-secondary-50 transition-smooth">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <img class="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1695840358933-16dd7baa6dfb" alt="Profile picture of Emma Wilson" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;">
+                                            <div class="ml-3">
+                                                <p class="text-sm font-medium text-text-primary">Emma Wilson</p>
+                                                <p class="text-sm text-text-secondary">192.168.1.115</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="status-dot connected mr-2"></div>
+                                            <span class="text-sm text-success font-medium">Connected</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 py-1 text-xs font-medium bg-primary-100 text-primary rounded-full">7 files</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-text-secondary">
+                                        1 minute ago
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                        <button class="text-primary hover:text-primary-700 mr-3">View</button>
+                                        <button class="text-error hover:text-error-600">Kick</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Recent Submissions Feed -->
+                <div class="mt-8 bg-surface rounded-xl shadow-card border border-secondary-200">
+                    <div class="p-6 border-b border-secondary-200">
+                        <h3 class="text-lg font-semibold text-text-primary">Recent Submissions</h3>
+                        <p class="text-text-secondary text-sm mt-1">Live feed of participant submissions</p>
+                    </div>
+                    
+                    <div class="p-6 space-y-4 max-h-96 overflow-y-auto">
+                        <div class="flex items-start space-x-4 p-4 bg-secondary-50 rounded-lg">
+                            <img class="h-8 w-8 rounded-full flex-shrink-0" src="https://images.unsplash.com/photo-1710604885283-b598ca251936" alt="Profile picture of Alex Chen" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;">
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center justify-between">
+                                    <p class="text-sm font-medium text-text-primary">Alex Chen</p>
+                                    <span class="text-xs text-text-secondary">2 minutes ago</span>
+                                </div>
+                                <p class="text-sm text-text-secondary">Submitted solution.py for Problem A</p>
+                                <div class="flex items-center mt-2 space-x-2">
+                                    <span class="px-2 py-1 text-xs bg-primary-100 text-primary rounded">Python</span>
+                                    <span class="text-xs text-text-secondary">2.4 KB</span>
+                                </div>
+                            </div>
+                            <button class="text-primary hover:text-primary-700 text-sm">Download</button>
+                        </div>
+
+                        <div class="flex items-start space-x-4 p-4 bg-secondary-50 rounded-lg">
+                            <img class="h-8 w-8 rounded-full flex-shrink-0" src="https://images.unsplash.com/photo-1695840358933-16dd7baa6dfb" alt="Profile picture of Emma Wilson" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;">
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center justify-between">
+                                    <p class="text-sm font-medium text-text-primary">Emma Wilson</p>
+                                    <span class="text-xs text-text-secondary">3 minutes ago</span>
+                                </div>
+                                <p class="text-sm text-text-secondary">Submitted Main.java for Problem B</p>
+                                <div class="flex items-center mt-2 space-x-2">
+                                    <span class="px-2 py-1 text-xs bg-accent-100 text-accent rounded">Java</span>
+                                    <span class="text-xs text-text-secondary">3.1 KB</span>
+                                </div>
+                            </div>
+                            <button class="text-primary hover:text-primary-700 text-sm">Download</button>
+                        </div>
+
+                        <div class="flex items-start space-x-4 p-4 bg-secondary-50 rounded-lg">
+                            <img class="h-8 w-8 rounded-full flex-shrink-0" src="https://images.unsplash.com/photo-1592831383329-23d79a212006" alt="Profile picture of Sarah Johnson" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;">
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center justify-between">
+                                    <p class="text-sm font-medium text-text-primary">Sarah Johnson</p>
+                                    <span class="text-xs text-text-secondary">5 minutes ago</span>
+                                </div>
+                                <p class="text-sm text-text-secondary">Submitted algorithm.cpp for Problem A</p>
+                                <div class="flex items-center mt-2 space-x-2">
+                                    <span class="px-2 py-1 text-xs bg-warning-100 text-warning rounded">C++</span>
+                                    <span class="text-xs text-text-secondary">1.8 KB</span>
+                                </div>
+                            </div>
+                            <button class="text-primary hover:text-primary-700 text-sm">Download</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Connection & Controls Panel -->
+            <div id="connection-panel" class="lg:col-span-1 tab-content">
+                <!-- QR Code & Connection Info -->
+                <div class="bg-surface rounded-xl shadow-card border border-secondary-200 mb-6">
+                    <div class="p-6 border-b border-secondary-200">
+                        <h3 class="text-lg font-semibold text-text-primary">Join Contest</h3>
+                        <p class="text-text-secondary text-sm mt-1">Share with participants</p>
+                    </div>
+                    
+                    <div class="p-6 text-center">
+                        <div class="w-48 h-48 mx-auto bg-secondary-200 rounded-lg flex items-center justify-center mb-4">
+                            <svg class="h-16 w-16 text-secondary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M12 12h-4.01M12 12v4m6-4h.01M12 8h4.01M12 8h-4.01"/>
+                            </svg>
+                        </div>
+                        
+                        <div class="space-y-3">
+                            <div class="bg-background rounded-lg p-3">
+                                <div class="flex items-center justify-center space-x-2">
+                                    <div class="status-dot connected"></div>
+                                    <span class="text-sm font-mono text-text-primary">192.168.1.100:8080</span>
+                                </div>
+                                <p class="text-text-secondary text-xs mt-1">Local network address</p>
+                            </div>
+                            
+                            <div class="bg-primary-50 rounded-lg p-3">
+                                <p class="text-2xl font-mono font-semibold text-primary tracking-wider">ALG2025</p>
+                                <p class="text-text-secondary text-xs mt-1">Contest invite code</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contest Controls -->
+                <div class="bg-surface rounded-xl shadow-card border border-secondary-200 mb-6">
+                    <div class="p-6 border-b border-secondary-200">
+                        <h3 class="text-lg font-semibold text-text-primary">Contest Controls</h3>
+                    </div>
+                    
+                    <div class="p-6 space-y-4">
+                        <button id="pause-contest" class="w-full px-4 py-3 bg-warning text-white rounded-lg hover:bg-warning-600 transition-smooth">
+                            <svg class="h-5 w-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            Pause Contest
+                        </button>
+                        
+                        <button id="extend-time" class="w-full px-4 py-3 border border-secondary-300 text-text-primary rounded-lg hover:bg-secondary-50 transition-smooth">
+                            <svg class="h-5 w-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            Extend Time (+30min)
+                        </button>
+                        
+                        <button id="emergency-stop" class="w-full px-4 py-3 bg-error text-white rounded-lg hover:bg-error-600 transition-smooth">
+                            <svg class="h-5 w-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                            </svg>
+                            Emergency Stop
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="bg-surface rounded-xl shadow-card border border-secondary-200">
+                    <div class="p-6 border-b border-secondary-200">
+                        <h3 class="text-lg font-semibold text-text-primary">Quick Actions</h3>
+                    </div>
+                    
+                    <div class="p-6 space-y-4">
+                        <a href="plagiarism_analysis.html" class="block w-full px-4 py-3 bg-accent text-white rounded-lg hover:bg-accent-600 transition-smooth text-center">
+                            <svg class="h-5 w-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+                            </svg>
+                            Run Plagiarism Check
+                        </a>
+                        
+                        <a href="submission_dashboard.html" class="block w-full px-4 py-3 border border-secondary-300 text-text-primary rounded-lg hover:bg-secondary-50 transition-smooth text-center">
+                            <svg class="h-5 w-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                            </svg>
+                            View Dashboard
+                        </a>
+                        
+                        <button id="export-results" class="w-full px-4 py-3 border border-secondary-300 text-text-primary rounded-lg hover:bg-secondary-50 transition-smooth">
+                            <svg class="h-5 w-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
+                            Export Results
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Send Message Modal -->
+    <div id="message-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-surface rounded-xl shadow-floating max-w-md w-full">
+                <div class="p-6 border-b border-secondary-200">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-semibold text-text-primary">Send Message to All Participants</h3>
+                        <button id="close-message-modal" class="text-text-secondary hover:text-text-primary">
+                            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="p-6">
+                    <textarea id="broadcast-message" rows="4" class="w-full px-4 py-3 border border-secondary-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-smooth" placeholder="Type your message to all participants..."></textarea>
+                    
+                    <div class="flex justify-end space-x-3 mt-6">
+                        <button id="cancel-message" class="px-4 py-2 border border-secondary-300 text-text-primary rounded-lg hover:bg-secondary-50 transition-smooth">
+                            Cancel
+                        </button>
+                        <button id="send-broadcast" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-700 transition-smooth">
+                            Send Message
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+
+        // Mobile tab navigation
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const targetTab = this.getAttribute('data-tab');
+                
+                // Update active tab button
+                tabButtons.forEach(btn => {
+                    btn.classList.remove('active', 'bg-surface', 'text-primary');
+                    btn.classList.add('text-text-secondary');
+                });
+                this.classList.add('active', 'bg-surface', 'text-primary');
+                this.classList.remove('text-text-secondary');
+
+                // Show/hide tab content on mobile
+                if (window.innerWidth < 1024) {
+                    tabContents.forEach(content => {
+                        if (content.id === targetTab + '-panel') {
+                            content.classList.remove('hidden');
+                        } else {
+                            content.classList.add('hidden');
+                        }
+                    });
+                }
+            });
+        });
+
+        // Initialize mobile tabs
+        function initializeMobileTabs() {
+            if (window.innerWidth < 1024) {
+                tabContents.forEach((content, index) => {
+                    if (index === 0) {
+                        content.classList.remove('hidden');
+                    } else {
+                        content.classList.add('hidden');
+                    }
+                });
+            } else {
+                tabContents.forEach(content => {
+                    content.classList.remove('hidden');
+                });
+            }
+        }
+
+        // Handle window resize
+        window.addEventListener('resize', initializeMobileTabs);
+        initializeMobileTabs();
+
+        // Message modal functionality
+        const messageModal = document.getElementById('message-modal');
+        const sendMessageBtn = document.getElementById('send-message-btn');
+        const closeMessageModal = document.getElementById('close-message-modal');
+        const cancelMessage = document.getElementById('cancel-message');
+        const sendBroadcast = document.getElementById('send-broadcast');
+
+        sendMessageBtn.addEventListener('click', function() {
+            messageModal.classList.remove('hidden');
+        });
+
+        closeMessageModal.addEventListener('click', function() {
+            messageModal.classList.add('hidden');
+        });
+
+        cancelMessage.addEventListener('click', function() {
+            messageModal.classList.add('hidden');
+        });
+
+        sendBroadcast.addEventListener('click', function() {
+            const message = document.getElementById('broadcast-message').value.trim();
+            if (message) {
+                alert('Message sent to all participants: ' + message);
+                document.getElementById('broadcast-message').value = '';
+                messageModal.classList.add('hidden');
+            }
+        });
+
+        // Contest control actions
+        document.getElementById('stop-contest-btn').addEventListener('click', function() {
+            if (confirm('Are you sure you want to stop the contest? This action cannot be undone.')) {
+                alert('Contest stopped successfully!');
+                window.location.href = 'contest_setup.html';
+            }
+        });
+
+        document.getElementById('pause-contest').addEventListener('click', function() {
+            if (confirm('Pause the contest for all participants?')) {
+                alert('Contest paused. Participants will be notified.');
+                this.innerHTML = '<svg class="h-5 w-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1.586a1 1 0 01.707.293l2.414 2.414a1 1 0 00.707.293H15M9 10V9a2 2 0 012-2h2a2 2 0 012 2v1M9 10v5a2 2 0 002 2h2a2 2 0 002-2v-5"/></svg>Resume Contest';
+                this.classList.remove('bg-warning', 'hover:bg-warning-600');
+                this.classList.add('bg-success', 'hover:bg-success-600');
+            }
+        });
+
+        document.getElementById('extend-time').addEventListener('click', function() {
+            if (confirm('Extend contest time by 30 minutes?')) {
+                alert('Contest time extended by 30 minutes. Participants will be notified.');
+            }
+        });
+
+        document.getElementById('emergency-stop').addEventListener('click', function() {
+            if (confirm('EMERGENCY STOP: This will immediately terminate the contest for all participants. Are you sure?')) {
+                alert('Emergency stop activated. Contest terminated.');
+                window.location.href = 'contest_setup.html';
+            }
+        });
+
+        // Refresh participants
+        document.getElementById('refresh-participants').addEventListener('click', function() {
+            this.classList.add('animate-spin');
+            setTimeout(() => {
+                this.classList.remove('animate-spin');
+                alert('Participant list refreshed');
+            }, 1000);
+        });
+
+        // Download all submissions
+        document.getElementById('download-submissions').addEventListener('click', function() {
+            alert('Downloading all submissions as contest_submissions.zip...');
+        });
+
+        // Export results
+        document.getElementById('export-results').addEventListener('click', function() {
+            alert('Exporting contest results as CSV...');
+        });
+
+        // Auto-refresh participant status every 30 seconds
+        setInterval(function() {
+            // Simulate status updates
+            console.log('Refreshing participant status...');
+        }, 30000);
+
+        // Simulate real-time submission updates
+        function addNewSubmission(participant, file, language, time) {
+            const submissionsFeed = document.querySelector('.space-y-4.max-h-96.overflow-y-auto');
+            const newSubmission = document.createElement('div');
+            newSubmission.className = 'flex items-start space-x-4 p-4 bg-primary-50 rounded-lg border-l-4 border-primary';
+            newSubmission.innerHTML = `
+                <img class="h-8 w-8 rounded-full flex-shrink-0" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3" alt="Profile picture of ${participant}" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;">
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-center justify-between">
+                        <p class="text-sm font-medium text-text-primary">${participant}</p>
+                        <span class="text-xs text-text-secondary">Just now</span>
+                    </div>
+                    <p class="text-sm text-text-secondary">Submitted ${file}</p>
+                    <div class="flex items-center mt-2 space-x-2">
+                        <span class="px-2 py-1 text-xs bg-primary-100 text-primary rounded">${language}</span>
+                        <span class="text-xs text-text-secondary">2.1 KB</span>
+                    </div>
+                </div>
+                <button class="text-primary hover:text-primary-700 text-sm">Download</button>
+            `;
+            submissionsFeed.insertBefore(newSubmission, submissionsFeed.firstChild);
+            
+            // Remove animation after 3 seconds
+            setTimeout(() => {
+                newSubmission.classList.remove('bg-primary-50', 'border-l-4', 'border-primary');
+                newSubmission.classList.add('bg-secondary-50');
+            }, 3000);
+        }
+
+        // Simulate new submissions every 45 seconds
+        const participants = ['David Kim', 'Lisa Zhang', 'Tom Anderson', 'Maria Garcia'];
+        const files = ['solution.py', 'algorithm.cpp', 'Main.java', 'script.js'];
+        const languages = ['Python', 'C++', 'Java', 'JavaScript'];
+
+        setInterval(() => {
+            const randomParticipant = participants[Math.floor(Math.random() * participants.length)];
+            const randomFile = files[Math.floor(Math.random() * files.length)];
+            const randomLanguage = languages[Math.floor(Math.random() * languages.length)];
+            addNewSubmission(randomParticipant, randomFile, randomLanguage, 'Just now');
+        }, 45000);
+    </script>
+<script id="dhws-dataInjector" src="../public/dhws-data-injector.js"></script>
+</body>
+</html>

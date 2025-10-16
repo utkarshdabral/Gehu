@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submission Dashboard - Local Coding Contest Platform</title>
+    <link rel="stylesheet" href="../css/main.css">
+  <script type="module" src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Flocalcodi4388back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.9"></script>
+  <script type="module" src="https://static.rocket.new/rocket-shot.js?v=0.0.1"></script>
+  </head>
+<body class="bg-background min-h-screen font-sans">
+    <!-- Navigation Header -->
+    <nav class="bg-surface shadow-card border-b border-secondary-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-4">
+                    <div class="flex-shrink-0">
+                        <svg class="h-8 w-8 text-primary" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                        </svg>
+                    </div>
+                    <h1 class="text-xl font-semibold text-text-primary">Contest Platform</h1>
+                </div>
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="contest_setup.html" class="text-text-secondary hover:text-primary transition-smooth px-3 py-2 rounded-lg hover:bg-secondary-100">Setup</a>
+                    <a href="contest_management.html" class="text-text-secondary hover:text-primary transition-smooth px-3 py-2 rounded-lg hover:bg-secondary-100">Management</a>
+                    <a href="participant_join.html" class="text-text-secondary hover:text-primary transition-smooth px-3 py-2 rounded-lg hover:bg-secondary-100">Join Contest</a>
+                    <a href="problem_viewer.html" class="text-text-secondary hover:text-primary transition-smooth px-3 py-2 rounded-lg hover:bg-secondary-100">Problems</a>
+                    <a href="submission_dashboard.html" class="text-primary font-medium px-3 py-2 rounded-lg bg-primary-50">Dashboard</a>
+                    <a href="plagiarism_analysis.html" class="text-text-secondary hover:text-primary transition-smooth px-3 py-2 rounded-lg hover:bg-secondary-100">Analysis</a>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-text-secondary hover:text-primary p-2">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-surface border-t border-secondary-200">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="contest_setup.html" class="block px-3 py-2 text-text-secondary hover:text-primary hover:bg-secondary-100 rounded-lg">Setup</a>
+                <a href="contest_management.html" class="block px-3 py-2 text-text-secondary hover:text-primary hover:bg-secondary-100 rounded-lg">Management</a>
+                <a href="participant_join.html" class="block px-3 py-2 text-text-secondary hover:text-primary hover:bg-secondary-100 rounded-lg">Join Contest</a>
+                <a href="problem_viewer.html" class="block px-3 py-2 text-text-secondary hover:text-primary hover:bg-secondary-100 rounded-lg">Problems</a>
+                <a href="submission_dashboard.html" class="block px-3 py-2 text-primary font-medium bg-primary-50 rounded-lg">Dashboard</a>
+                <a href="plagiarism_analysis.html" class="block px-3 py-2 text-text-secondary hover:text-primary hover:bg-secondary-100 rounded-lg">Analysis</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Contest Status Banner -->
+        <div class="bg-surface rounded-xl shadow-card border border-secondary-200 mb-8">
+            <div class="p-6">
+                <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
+                    <div class="flex items-center space-x-4">
+                        <div class="status-dot connected"></div>
+                        <div>
+                            <h2 class="text-xl font-semibold text-text-primary">Algorithm Challenge 2025</h2>
+                            <p class="text-text-secondary">Connected to contest • Participant: Alex Chen</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-6">
+                        <div class="text-center">
+                            <div class="text-2xl font-semibold text-primary" id="time-remaining">01:23:45</div>
+                            <div class="text-sm text-text-secondary">Time Remaining</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl font-semibold text-accent">3</div>
+                            <div class="text-sm text-text-secondary">Submissions</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Main Submission Panel -->
+            <div class="lg:col-span-2 space-y-6">
+                <!-- Quick Actions -->
+                <div class="bg-surface rounded-xl shadow-card border border-secondary-200">
+                    <div class="p-6 border-b border-secondary-200">
+                        <h3 class="text-lg font-semibold text-text-primary">Quick Actions</h3>
+                    </div>
+                    <div class="p-6">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <a href="problem_viewer.html" class="flex items-center justify-center px-4 py-3 bg-primary text-white rounded-lg hover:bg-primary-700 transition-smooth">
+                                <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                </svg>
+                                View Problems
+                            </a>
+                            <button id="new-submission-btn" class="flex items-center justify-center px-4 py-3 bg-accent text-white rounded-lg hover:bg-accent-600 transition-smooth">
+                                <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                                </svg>
+                                New Submission
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submission History -->
+                <div class="bg-surface rounded-xl shadow-card border border-secondary-200">
+                    <div class="p-6 border-b border-secondary-200">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-lg font-semibold text-text-primary">Submission History</h3>
+                            <button id="refresh-btn" class="text-text-secondary hover:text-primary p-2 rounded-lg hover:bg-secondary-100 transition-smooth">
+                                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="space-y-4" id="submission-list">
+                            <!-- Submission Item 1 -->
+                            <div class="border border-secondary-200 rounded-lg p-4 hover:bg-secondary-50 transition-smooth">
+                                <div class="flex items-start justify-between">
+                                    <div class="flex-1">
+                                        <div class="flex items-center space-x-3 mb-2">
+                                            <div class="flex items-center space-x-2">
+                                                <svg class="h-5 w-5 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                                </svg>
+                                                <span class="text-sm font-medium text-success">Submitted Successfully</span>
+                                            </div>
+                                            <span class="text-xs text-text-secondary">Version 3</span>
+                                        </div>
+                                        <h4 class="font-medium text-text-primary mb-1">two_sum_solution.py</h4>
+                                        <div class="flex flex-wrap items-center gap-4 text-sm text-text-secondary">
+                                            <span>Problem: Two Sum</span>
+                                            <span>Language: Python</span>
+                                            <span>Size: 2.3 KB</span>
+                                            <span>Oct 16, 2025 at 3:45 PM</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center space-x-2 ml-4">
+                                        <button class="text-text-secondary hover:text-primary p-1 rounded transition-smooth" title="View Code">
+                                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                            </svg>
+                                        </button>
+                                        <button class="text-text-secondary hover:text-primary p-1 rounded transition-smooth" title="Resubmit">
+                                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <div class="w-full bg-secondary-200 rounded-full h-2">
+                                        <div class="bg-success h-2 rounded-full progress-bar" style="width: 100%"></div>
+                                    </div>
+                                    <p class="text-xs text-success mt-1">Transfer completed • Backup saved locally</p>
+                                </div>
+                            </div>
+
+                            <!-- Submission Item 2 -->
+                            <div class="border border-secondary-200 rounded-lg p-4 hover:bg-secondary-50 transition-smooth">
+                                <div class="flex items-start justify-between">
+                                    <div class="flex-1">
+                                        <div class="flex items-center space-x-3 mb-2">
+                                            <div class="flex items-center space-x-2">
+                                                <svg class="h-5 w-5 text-warning animate-pulse-connection" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                                </svg>
+                                                <span class="text-sm font-medium text-warning">Uploading...</span>
+                                            </div>
+                                            <span class="text-xs text-text-secondary">Version 2</span>
+                                        </div>
+                                        <h4 class="font-medium text-text-primary mb-1">binary_search.cpp</h4>
+                                        <div class="flex flex-wrap items-center gap-4 text-sm text-text-secondary">
+                                            <span>Problem: Binary Search</span>
+                                            <span>Language: C++</span>
+                                            <span>Size: 1.8 KB</span>
+                                            <span>Oct 16, 2025 at 3:42 PM</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center space-x-2 ml-4">
+                                        <button class="text-text-secondary hover:text-primary p-1 rounded transition-smooth" title="Cancel Upload">
+                                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <div class="w-full bg-secondary-200 rounded-full h-2">
+                                        <div class="bg-warning h-2 rounded-full progress-bar" style="width: 67%"></div>
+                                    </div>
+                                    <p class="text-xs text-warning mt-1">Uploading via P2P • 67% complete</p>
+                                </div>
+                            </div>
+
+                            <!-- Submission Item 3 -->
+                            <div class="border border-error-100 bg-error-100 rounded-lg p-4">
+                                <div class="flex items-start justify-between">
+                                    <div class="flex-1">
+                                        <div class="flex items-center space-x-3 mb-2">
+                                            <div class="flex items-center space-x-2">
+                                                <svg class="h-5 w-5 text-error" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                                </svg>
+                                                <span class="text-sm font-medium text-error">Upload Failed</span>
+                                            </div>
+                                            <span class="text-xs text-text-secondary">Version 1</span>
+                                        </div>
+                                        <h4 class="font-medium text-text-primary mb-1">sorting_algorithm.java</h4>
+                                        <div class="flex flex-wrap items-center gap-4 text-sm text-text-secondary">
+                                            <span>Problem: Quick Sort</span>
+                                            <span>Language: Java</span>
+                                            <span>Size: 3.1 KB</span>
+                                            <span>Oct 16, 2025 at 3:38 PM</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center space-x-2 ml-4">
+                                        <button class="text-error hover:text-error-600 p-1 rounded transition-smooth" title="Retry Upload">
+                                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <p class="text-xs text-error">Connection lost during transfer • File saved locally for retry</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Secondary Panel -->
+            <div class="lg:col-span-1 space-y-6">
+                <!-- Connection Status -->
+                <div class="bg-surface rounded-xl shadow-card border border-secondary-200">
+                    <div class="p-6 border-b border-secondary-200">
+                        <h3 class="text-lg font-semibold text-text-primary">Connection Status</h3>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="text-text-secondary">Organizer</span>
+                            <div class="flex items-center space-x-2">
+                                <div class="status-dot connected"></div>
+                                <span class="text-sm text-success">Connected</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-text-secondary">P2P Transfer</span>
+                            <div class="flex items-center space-x-2">
+                                <div class="status-dot connected"></div>
+                                <span class="text-sm text-success">Active</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-text-secondary">Local Backup</span>
+                            <div class="flex items-center space-x-2">
+                                <div class="status-dot connected"></div>
+                                <span class="text-sm text-success">Enabled</span>
+                            </div>
+                        </div>
+                        <div class="pt-2 border-t border-secondary-200">
+                            <div class="text-sm text-text-secondary">
+                                <p>IP: 192.168.1.100:8080</p>
+                                <p>Signal Strength: Strong</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contest Leaderboard -->
+                <div class="bg-surface rounded-xl shadow-card border border-secondary-200">
+                    <div class="p-6 border-b border-secondary-200">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-lg font-semibold text-text-primary">Leaderboard</h3>
+                            <span class="text-xs text-text-secondary">Live Rankings</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between p-3 bg-primary-50 rounded-lg">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center text-xs font-semibold">1</div>
+                                    <span class="font-medium text-text-primary">Participant_7</span>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-sm font-semibold text-primary">5 submissions</div>
+                                    <div class="text-xs text-text-secondary">Last: 2 min ago</div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center justify-between p-3 bg-accent-100 rounded-lg">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-6 h-6 bg-accent text-white rounded-full flex items-center justify-center text-xs font-semibold">2</div>
+                                    <span class="font-medium text-text-primary">Participant_3</span>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-sm font-semibold text-accent">4 submissions</div>
+                                    <div class="text-xs text-text-secondary">Last: 5 min ago</div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center justify-between p-3 bg-warning-100 rounded-lg">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-6 h-6 bg-warning text-white rounded-full flex items-center justify-center text-xs font-semibold">3</div>
+                                    <span class="font-medium text-text-primary">You (Alex Chen)</span>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-sm font-semibold text-warning">3 submissions</div>
+                                    <div class="text-xs text-text-secondary">Last: 3 min ago</div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center justify-between p-3 bg-secondary-100 rounded-lg">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-6 h-6 bg-secondary text-white rounded-full flex items-center justify-center text-xs font-semibold">4</div>
+                                    <span class="font-medium text-text-primary">Participant_12</span>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-sm font-semibold text-secondary">2 submissions</div>
+                                    <div class="text-xs text-text-secondary">Last: 8 min ago</div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center justify-between p-3 bg-secondary-100 rounded-lg">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-6 h-6 bg-secondary text-white rounded-full flex items-center justify-center text-xs font-semibold">5</div>
+                                    <span class="font-medium text-text-primary">Participant_1</span>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-sm font-semibold text-secondary">1 submission</div>
+                                    <div class="text-xs text-text-secondary">Last: 12 min ago</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4 pt-4 border-t border-secondary-200 text-center">
+                            <p class="text-xs text-text-secondary">Total Participants: 8</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Organizer Messages -->
+                <div class="bg-surface rounded-xl shadow-card border border-secondary-200">
+                    <div class="p-6 border-b border-secondary-200">
+                        <h3 class="text-lg font-semibold text-text-primary">Organizer Messages</h3>
+                    </div>
+                    <div class="p-6">
+                        <div class="space-y-3">
+                            <div class="bg-primary-50 rounded-lg p-3">
+                                <div class="flex items-start space-x-2">
+                                    <svg class="h-4 w-4 text-primary mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                    <div>
+                                        <p class="text-sm text-text-primary">Contest extended by 30 minutes due to technical issues.</p>
+                                        <p class="text-xs text-text-secondary mt-1">5 minutes ago</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-accent-50 rounded-lg p-3">
+                                <div class="flex items-start space-x-2">
+                                    <svg class="h-4 w-4 text-accent mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                    <div>
+                                        <p class="text-sm text-text-primary">All problem files have been successfully distributed.</p>
+                                        <p class="text-xs text-text-secondary mt-1">15 minutes ago</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-secondary-100 rounded-lg p-3">
+                                <div class="flex items-start space-x-2">
+                                    <svg class="h-4 w-4 text-secondary mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                    <div>
+                                        <p class="text-sm text-text-primary">Welcome to Algorithm Challenge 2025! Good luck to all participants.</p>
+                                        <p class="text-xs text-text-secondary mt-1">45 minutes ago</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- New Submission Modal -->
+    <div id="submission-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-surface rounded-xl shadow-floating max-w-md w-full">
+            <div class="p-6 border-b border-secondary-200">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-lg font-semibold text-text-primary">New Submission</h3>
+                    <button id="close-modal" class="text-text-secondary hover:text-primary p-1 rounded transition-smooth">
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="p-6">
+                <form id="submission-form" class="space-y-4">
+                    <div>
+                        <label for="problem-select" class="block text-sm font-medium text-text-primary mb-2">Select Problem</label>
+                        <select id="problem-select" class="w-full px-4 py-3 border border-secondary-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-smooth">
+                            <option value="">Choose a problem</option>
+                            <option value="two-sum">Two Sum</option>
+                            <option value="binary-search">Binary Search</option>
+                            <option value="quick-sort">Quick Sort</option>
+                            <option value="graph-traversal">Graph Traversal</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label for="file-input" class="block text-sm font-medium text-text-primary mb-2">Solution File</label>
+                        <div class="border-2 border-dashed border-secondary-300 rounded-lg p-4 text-center hover:border-primary transition-smooth">
+                            <svg class="mx-auto h-8 w-8 text-secondary-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                            </svg>
+                            <p class="text-text-secondary text-sm">Drop your solution file here or click to browse</p>
+                            <input type="file" id="file-input" class="hidden" accept=".py,.java,.cpp,.c,.js,.go">
+                            <button type="button" onclick="document.getElementById('file-input').click()" class="mt-2 px-3 py-1 bg-primary text-white text-sm rounded hover:bg-primary-700 transition-smooth">
+                                Browse Files
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="flex space-x-3 pt-4">
+                        <button type="button" id="cancel-submission" class="flex-1 px-4 py-2 border border-secondary-300 text-text-primary rounded-lg hover:bg-secondary-50 transition-smooth">
+                            Cancel
+                        </button>
+                        <button type="submit" class="flex-1 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-700 transition-smooth">
+                            Submit Solution
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+
+        // Contest timer countdown
+        function updateTimer() {
+            const timerElement = document.getElementById('time-remaining');
+            let timeLeft = 5025; // 1:23:45 in seconds
+            
+            setInterval(() => {
+                if (timeLeft > 0) {
+                    const hours = Math.floor(timeLeft / 3600);
+                    const minutes = Math.floor((timeLeft % 3600) / 60);
+                    const seconds = timeLeft % 60;
+                    
+                    timerElement.textContent = 
+                        `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                    
+                    timeLeft--;
+                } else {
+                    timerElement.textContent = '00:00:00';
+                    timerElement.classList.add('text-error');
+                }
+            }, 1000);
+        }
+        
+        updateTimer();
+
+        // Refresh submissions
+        document.getElementById('refresh-btn').addEventListener('click', function() {
+            this.classList.add('animate-spin');
+            setTimeout(() => {
+                this.classList.remove('animate-spin');
+                // Simulate refresh
+                console.log('Refreshing submissions...');
+            }, 1000);
+        });
+
+        // New submission modal
+        const modal = document.getElementById('submission-modal');
+        const newSubmissionBtn = document.getElementById('new-submission-btn');
+        const closeModal = document.getElementById('close-modal');
+        const cancelSubmission = document.getElementById('cancel-submission');
+
+        newSubmissionBtn.addEventListener('click', () => {
+            modal.classList.remove('hidden');
+        });
+
+        closeModal.addEventListener('click', () => {
+            modal.classList.add('hidden');
+        });
+
+        cancelSubmission.addEventListener('click', () => {
+            modal.classList.add('hidden');
+        });
+
+        // Close modal on backdrop click
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.add('hidden');
+            }
+        });
+
+        // File input handling
+        const fileInput = document.getElementById('file-input');
+        fileInput.addEventListener('change', function() {
+            if (this.files.length > 0) {
+                const fileName = this.files[0].name;
+                const fileSize = (this.files[0].size / 1024).toFixed(1);
+                console.log(`Selected file: ${fileName} (${fileSize} KB)`);
+            }
+        });
+
+        // Submission form handling
+        document.getElementById('submission-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const problem = document.getElementById('problem-select').value;
+            const file = document.getElementById('file-input').files[0];
+            
+            if (!problem || !file) {
+                alert('Please select a problem and upload a solution file.');
+                return;
+            }
+            
+            // Simulate submission
+            modal.classList.add('hidden');
+            alert(`Submitting ${file.name} for ${problem}...`);
+            
+            // Reset form
+            this.reset();
+        });
+
+        // Simulate real-time updates
+        setInterval(() => {
+            // Randomly update leaderboard positions or add new messages
+            console.log('Checking for updates...');
+        }, 30000);
+    </script>
+<script id="dhws-dataInjector" src="../public/dhws-data-injector.js"></script>
+</body>
+</html>

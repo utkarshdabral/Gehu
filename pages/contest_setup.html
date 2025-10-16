@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contest Setup - Local Coding Contest Platform</title>
+    <link rel="stylesheet" href="../css/main.css">
+  <script type="module" src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Flocalcodi4388back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.9"></script>
+  <script type="module" src="https://static.rocket.new/rocket-shot.js?v=0.0.1"></script>
+  </head>
+<body class="bg-background min-h-screen font-sans">
+    <!-- Navigation Header -->
+    <nav class="bg-surface shadow-card border-b border-secondary-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-4">
+                    <div class="flex-shrink-0">
+                        <svg class="h-8 w-8 text-primary" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                        </svg>
+                    </div>
+                    <h1 class="text-xl font-semibold text-text-primary">Contest Platform</h1>
+                </div>
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="contest_setup.html" class="text-primary font-medium px-3 py-2 rounded-lg bg-primary-50">Setup</a>
+                    <a href="contest_management.html" class="text-text-secondary hover:text-primary transition-smooth px-3 py-2 rounded-lg hover:bg-secondary-100">Management</a>
+                    <a href="participant_join.html" class="text-text-secondary hover:text-primary transition-smooth px-3 py-2 rounded-lg hover:bg-secondary-100">Join Contest</a>
+                    <a href="submission_dashboard.html" class="text-text-secondary hover:text-primary transition-smooth px-3 py-2 rounded-lg hover:bg-secondary-100">Dashboard</a>
+                    <a href="plagiarism_analysis.html" class="text-text-secondary hover:text-primary transition-smooth px-3 py-2 rounded-lg hover:bg-secondary-100">Analysis</a>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-text-secondary hover:text-primary p-2">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-surface border-t border-secondary-200">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="contest_setup.html" class="block px-3 py-2 text-primary font-medium bg-primary-50 rounded-lg">Setup</a>
+                <a href="contest_management.html" class="block px-3 py-2 text-text-secondary hover:text-primary hover:bg-secondary-100 rounded-lg">Management</a>
+                <a href="participant_join.html" class="block px-3 py-2 text-text-secondary hover:text-primary hover:bg-secondary-100 rounded-lg">Join Contest</a>
+                <a href="submission_dashboard.html" class="block px-3 py-2 text-text-secondary hover:text-primary hover:bg-secondary-100 rounded-lg">Dashboard</a>
+                <a href="plagiarism_analysis.html" class="block px-3 py-2 text-text-secondary hover:text-primary hover:bg-secondary-100 rounded-lg">Analysis</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Main Form Section -->
+            <div class="lg:col-span-2">
+                <div class="bg-surface rounded-xl shadow-card border border-secondary-200">
+                    <div class="p-6 border-b border-secondary-200">
+                        <h2 class="text-2xl font-semibold text-text-primary">Create New Contest</h2>
+                        <p class="text-text-secondary mt-1">Configure your coding contest parameters and settings</p>
+                    </div>
+
+                    <form id="contest-form" class="p-6 space-y-8">
+                        <!-- Contest Basics -->
+                        <div class="space-y-6">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-lg font-medium text-text-primary">Contest Basics</h3>
+                                <span class="text-sm text-text-secondary">Step 1 of 4</span>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="md:col-span-2">
+                                    <label for="contest-title" class="block text-sm font-medium text-text-primary mb-2">Contest Title *</label>
+                                    <input type="text" id="contest-title" name="title" required
+                                           class="w-full px-4 py-3 border border-secondary-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-smooth"
+                                           placeholder="Enter contest title">
+                                    <div class="text-error text-sm mt-1 hidden" id="title-error">Contest title is required</div>
+                                </div>
+                                
+                                <div class="md:col-span-2">
+                                    <label for="contest-description" class="block text-sm font-medium text-text-primary mb-2">Description</label>
+                                    <textarea id="contest-description" name="description" rows="4"
+                                              class="w-full px-4 py-3 border border-secondary-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-smooth"
+                                              placeholder="Describe the contest objectives and rules"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Timing Configuration -->
+                        <div class="space-y-6 border-t border-secondary-200 pt-8">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-lg font-medium text-text-primary">Timing Configuration</h3>
+                                <span class="text-sm text-text-secondary">Step 2 of 4</span>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label for="start-time" class="block text-sm font-medium text-text-primary mb-2">Start Time *</label>
+                                    <input type="datetime-local" id="start-time" name="startTime" required
+                                           class="w-full px-4 py-3 border border-secondary-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-smooth">
+                                    <div class="text-error text-sm mt-1 hidden" id="start-time-error">Start time is required</div>
+                                </div>
+                                
+                                <div>
+                                    <label for="duration" class="block text-sm font-medium text-text-primary mb-2">Duration (minutes) *</label>
+                                    <select id="duration" name="duration" required
+                                            class="w-full px-4 py-3 border border-secondary-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-smooth">
+                                        <option value="">Select duration</option>
+                                        <option value="30">30 minutes</option>
+                                        <option value="60">1 hour</option>
+                                        <option value="90">1.5 hours</option>
+                                        <option value="120">2 hours</option>
+                                        <option value="180">3 hours</option>
+                                        <option value="240">4 hours</option>
+                                        <option value="300">5 hours</option>
+                                    </select>
+                                    <div class="text-error text-sm mt-1 hidden" id="duration-error">Duration is required</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Technical Settings -->
+                        <div class="space-y-6 border-t border-secondary-200 pt-8">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-lg font-medium text-text-primary">Technical Settings</h3>
+                                <span class="text-sm text-text-secondary">Step 3 of 4</span>
+                            </div>
+                            
+                            <div class="space-y-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-text-primary mb-3">Allowed Programming Languages *</label>
+                                    <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                                        <label class="flex items-center space-x-2 cursor-pointer">
+                                            <input type="checkbox" name="languages" value="python" class="rounded border-secondary-300 text-primary focus:ring-primary">
+                                            <span class="text-sm text-text-primary">Python</span>
+                                        </label>
+                                        <label class="flex items-center space-x-2 cursor-pointer">
+                                            <input type="checkbox" name="languages" value="java" class="rounded border-secondary-300 text-primary focus:ring-primary">
+                                            <span class="text-sm text-text-primary">Java</span>
+                                        </label>
+                                        <label class="flex items-center space-x-2 cursor-pointer">
+                                            <input type="checkbox" name="languages" value="cpp" class="rounded border-secondary-300 text-primary focus:ring-primary">
+                                            <span class="text-sm text-text-primary">C++</span>
+                                        </label>
+                                        <label class="flex items-center space-x-2 cursor-pointer">
+                                            <input type="checkbox" name="languages" value="c" class="rounded border-secondary-300 text-primary focus:ring-primary">
+                                            <span class="text-sm text-text-primary">C</span>
+                                        </label>
+                                        <label class="flex items-center space-x-2 cursor-pointer">
+                                            <input type="checkbox" name="languages" value="javascript" class="rounded border-secondary-300 text-primary focus:ring-primary">
+                                            <span class="text-sm text-text-primary">JavaScript</span>
+                                        </label>
+                                        <label class="flex items-center space-x-2 cursor-pointer">
+                                            <input type="checkbox" name="languages" value="go" class="rounded border-secondary-300 text-primary focus:ring-primary">
+                                            <span class="text-sm text-text-primary">Go</span>
+                                        </label>
+                                    </div>
+                                    <div class="text-error text-sm mt-1 hidden" id="languages-error">Select at least one programming language</div>
+                                </div>
+
+                                <div>
+                                    <label for="max-submissions" class="block text-sm font-medium text-text-primary mb-2">Max Submissions per Problem</label>
+                                    <select id="max-submissions" name="maxSubmissions"
+                                            class="w-full px-4 py-3 border border-secondary-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-smooth">
+                                        <option value="unlimited">Unlimited</option>
+                                        <option value="1">1 submission</option>
+                                        <option value="3">3 submissions</option>
+                                        <option value="5">5 submissions</option>
+                                        <option value="10">10 submissions</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Problem Files Upload -->
+                        <div class="space-y-6 border-t border-secondary-200 pt-8">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-lg font-medium text-text-primary">Problem Files</h3>
+                                <span class="text-sm text-text-secondary">Step 4 of 4</span>
+                            </div>
+                            
+                            <div class="border-2 border-dashed border-secondary-300 rounded-lg p-8 text-center hover:border-primary transition-smooth" id="file-drop-zone">
+                                <svg class="mx-auto h-12 w-12 text-secondary-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                                </svg>
+                                <p class="text-text-primary font-medium mb-2">Drop problem files here or click to browse</p>
+                                <p class="text-text-secondary text-sm">Supports PDF, TXT, MD files up to 10MB each</p>
+                                <input type="file" id="problem-files" name="problemFiles" multiple accept=".pdf,.txt,.md" class="hidden">
+                                <button type="button" onclick="document.getElementById('problem-files').click()" 
+                                        class="mt-4 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-700 transition-smooth">
+                                    Browse Files
+                                </button>
+                            </div>
+                            
+                            <div id="file-list" class="space-y-2 hidden">
+                                <h4 class="text-sm font-medium text-text-primary">Selected Files:</h4>
+                                <div id="file-items" class="space-y-2"></div>
+                            </div>
+                        </div>
+
+                        <!-- Advanced Settings (Collapsible) -->
+                        <div class="border-t border-secondary-200 pt-8">
+                            <button type="button" id="advanced-toggle" class="flex items-center justify-between w-full text-left">
+                                <h3 class="text-lg font-medium text-text-primary">Advanced Settings</h3>
+                                <svg class="h-5 w-5 text-text-secondary transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                </svg>
+                            </button>
+                            
+                            <div id="advanced-settings" class="hidden mt-6 space-y-6">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="flex items-center space-x-3 cursor-pointer">
+                                            <input type="checkbox" id="password-protection" name="passwordProtection" class="rounded border-secondary-300 text-primary focus:ring-primary">
+                                            <span class="text-sm font-medium text-text-primary">Password Protection</span>
+                                        </label>
+                                        <input type="password" id="contest-password" name="password" placeholder="Enter contest password" 
+                                               class="mt-2 w-full px-4 py-3 border border-secondary-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-smooth hidden">
+                                    </div>
+                                    
+                                    <div>
+                                        <label for="participant-limit" class="block text-sm font-medium text-text-primary mb-2">Participant Limit</label>
+                                        <input type="number" id="participant-limit" name="participantLimit" min="1" max="100" 
+                                               class="w-full px-4 py-3 border border-secondary-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-smooth"
+                                               placeholder="No limit">
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <label class="flex items-center space-x-3 cursor-pointer">
+                                        <input type="checkbox" id="plagiarism-detection" name="plagiarismDetection" checked class="rounded border-secondary-300 text-primary focus:ring-primary">
+                                        <span class="text-sm font-medium text-text-primary">Enable Plagiarism Detection</span>
+                                    </label>
+                                    <p class="text-text-secondary text-sm mt-1 ml-6">Automatically analyze submissions for similarity using JPlag</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Form Actions -->
+                        <div class="flex flex-col sm:flex-row gap-4 pt-8 border-t border-secondary-200">
+                            <button type="button" id="save-draft-btn" 
+                                    class="flex-1 px-6 py-3 border border-secondary-300 text-text-primary rounded-lg hover:bg-secondary-50 transition-smooth">
+                                Save Draft
+                            </button>
+                            <button type="button" id="generate-token-btn" 
+                                    class="flex-1 px-6 py-3 bg-accent text-white rounded-lg hover:bg-accent-600 transition-smooth">
+                                Generate Invite Token
+                            </button>
+                            <button type="submit" id="start-contest-btn" 
+                                    class="flex-1 px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary-700 transition-smooth">
+                                Start Contest
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Preview Panel -->
+            <div class="lg:col-span-1">
+                <div class="bg-surface rounded-xl shadow-card border border-secondary-200 sticky top-8">
+                    <div class="p-6 border-b border-secondary-200">
+                        <h3 class="text-lg font-semibold text-text-primary">Contest Preview</h3>
+                        <p class="text-text-secondary text-sm mt-1">Live preview of your contest</p>
+                    </div>
+                    
+                    <div class="p-6 space-y-6">
+                        <!-- Contest Summary -->
+                        <div class="space-y-4">
+                            <div>
+                                <h4 class="text-sm font-medium text-text-secondary uppercase tracking-wide">Title</h4>
+                                <p id="preview-title" class="text-text-primary font-medium mt-1">Untitled Contest</p>
+                            </div>
+                            
+                            <div>
+                                <h4 class="text-sm font-medium text-text-secondary uppercase tracking-wide">Duration</h4>
+                                <p id="preview-duration" class="text-text-primary mt-1">Not set</p>
+                            </div>
+                            
+                            <div>
+                                <h4 class="text-sm font-medium text-text-secondary uppercase tracking-wide">Languages</h4>
+                                <div id="preview-languages" class="flex flex-wrap gap-1 mt-1">
+                                    <span class="text-text-secondary text-sm">None selected</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- QR Code Section -->
+                        <div class="border-t border-secondary-200 pt-6">
+                            <h4 class="text-sm font-medium text-text-secondary uppercase tracking-wide mb-3">Join Contest</h4>
+                            <div class="bg-background rounded-lg p-4 text-center">
+                                <div id="qr-code" class="w-32 h-32 mx-auto bg-secondary-200 rounded-lg flex items-center justify-center mb-3">
+                                    <svg class="h-8 w-8 text-secondary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M12 12h-4.01M12 12v4m6-4h.01M12 8h4.01M12 8h-4.01"/>
+                                    </svg>
+                                </div>
+                                <p class="text-text-secondary text-sm">QR code will appear when contest is created</p>
+                            </div>
+                        </div>
+
+                        <!-- Local IP Address -->
+                        <div class="border-t border-secondary-200 pt-6">
+                            <h4 class="text-sm font-medium text-text-secondary uppercase tracking-wide mb-3">Local Access</h4>
+                            <div class="bg-background rounded-lg p-3">
+                                <div class="flex items-center space-x-2">
+                                    <div class="status-dot connecting"></div>
+                                    <span class="text-sm font-mono text-text-primary">192.168.1.100:8080</span>
+                                </div>
+                                <p class="text-text-secondary text-xs mt-1">Participants can join via this address</p>
+                            </div>
+                        </div>
+
+                        <!-- Invite Token -->
+                        <div id="invite-token-section" class="border-t border-secondary-200 pt-6 hidden">
+                            <h4 class="text-sm font-medium text-text-secondary uppercase tracking-wide mb-3">Invite Token</h4>
+                            <div class="bg-primary-50 rounded-lg p-3 text-center">
+                                <p id="invite-token" class="text-2xl font-mono font-semibold text-primary tracking-wider">ABC123</p>
+                                <p class="text-text-secondary text-xs mt-1">Share this 6-digit code with participants</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+
+        // Advanced settings toggle
+        document.getElementById('advanced-toggle').addEventListener('click', function() {
+            const settings = document.getElementById('advanced-settings');
+            const icon = this.querySelector('svg');
+            settings.classList.toggle('hidden');
+            icon.classList.toggle('rotate-180');
+        });
+
+        // Password protection toggle
+        document.getElementById('password-protection').addEventListener('change', function() {
+            const passwordField = document.getElementById('contest-password');
+            if (this.checked) {
+                passwordField.classList.remove('hidden');
+            } else {
+                passwordField.classList.add('hidden');
+            }
+        });
+
+        // File upload handling
+        const fileDropZone = document.getElementById('file-drop-zone');
+        const fileInput = document.getElementById('problem-files');
+        const fileList = document.getElementById('file-list');
+        const fileItems = document.getElementById('file-items');
+
+        fileDropZone.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.classList.add('border-primary', 'bg-primary-50');
+        });
+
+        fileDropZone.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            this.classList.remove('border-primary', 'bg-primary-50');
+        });
+
+        fileDropZone.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.classList.remove('border-primary', 'bg-primary-50');
+            const files = e.dataTransfer.files;
+            handleFiles(files);
+        });
+
+        fileInput.addEventListener('change', function() {
+            handleFiles(this.files);
+        });
+
+        function handleFiles(files) {
+            if (files.length > 0) {
+                fileList.classList.remove('hidden');
+                fileItems.innerHTML = '';
+                
+                Array.from(files).forEach((file, index) => {
+                    const fileItem = document.createElement('div');
+                    fileItem.className = 'flex items-center justify-between p-3 bg-background rounded-lg';
+                    fileItem.innerHTML = `
+                        <div class="flex items-center space-x-3">
+                            <svg class="h-5 w-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
+                            <div>
+                                <p class="text-sm font-medium text-text-primary">${file.name}</p>
+                                <p class="text-xs text-text-secondary">${(file.size / 1024).toFixed(1)} KB</p>
+                            </div>
+                        </div>
+                        <button type="button" onclick="removeFile(${index})" class="text-error hover:text-error-600 p-1">
+                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                        </button>
+                    `;
+                    fileItems.appendChild(fileItem);
+                });
+            }
+        }
+
+        // Live preview updates
+        document.getElementById('contest-title').addEventListener('input', function() {
+            document.getElementById('preview-title').textContent = this.value || 'Untitled Contest';
+        });
+
+        document.getElementById('duration').addEventListener('change', function() {
+            const duration = this.options[this.selectedIndex].text;
+            document.getElementById('preview-duration').textContent = duration || 'Not set';
+        });
+
+        // Language selection preview
+        document.querySelectorAll('input[name="languages"]').forEach(checkbox => {
+            checkbox.addEventListener('change', updateLanguagePreview);
+        });
+
+        function updateLanguagePreview() {
+            const selected = Array.from(document.querySelectorAll('input[name="languages"]:checked'))
+                .map(cb => cb.value);
+            
+            const previewContainer = document.getElementById('preview-languages');
+            if (selected.length === 0) {
+                previewContainer.innerHTML = '<span class="text-text-secondary text-sm">None selected</span>';
+            } else {
+                previewContainer.innerHTML = selected.map(lang => 
+                    `<span class="px-2 py-1 bg-primary-100 text-primary text-xs rounded-full">${lang}</span>`
+                ).join('');
+            }
+        }
+
+        // Generate invite token
+        document.getElementById('generate-token-btn').addEventListener('click', function() {
+            const token = Math.random().toString(36).substr(2, 6).toUpperCase();
+            document.getElementById('invite-token').textContent = token;
+            document.getElementById('invite-token-section').classList.remove('hidden');
+        });
+
+        // Form validation and submission
+        document.getElementById('contest-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Basic validation
+            let isValid = true;
+            const title = document.getElementById('contest-title').value.trim();
+            const startTime = document.getElementById('start-time').value;
+            const duration = document.getElementById('duration').value;
+            const languages = document.querySelectorAll('input[name="languages"]:checked');
+
+            // Reset error states
+            document.querySelectorAll('.text-error').forEach(el => el.classList.add('hidden'));
+
+            if (!title) {
+                document.getElementById('title-error').classList.remove('hidden');
+                isValid = false;
+            }
+
+            if (!startTime) {
+                document.getElementById('start-time-error').classList.remove('hidden');
+                isValid = false;
+            }
+
+            if (!duration) {
+                document.getElementById('duration-error').classList.remove('hidden');
+                isValid = false;
+            }
+
+            if (languages.length === 0) {
+                document.getElementById('languages-error').classList.remove('hidden');
+                isValid = false;
+            }
+
+            if (isValid) {
+                // Simulate contest creation
+                alert('Contest created successfully! Redirecting to contest management...');
+                window.location.href = 'contest_management.html';
+            }
+        });
+
+        // Save draft functionality
+        document.getElementById('save-draft-btn').addEventListener('click', function() {
+            alert('Contest draft saved successfully!');
+        });
+
+        // Set default start time to current time + 1 hour
+        const now = new Date();
+        now.setHours(now.getHours() + 1);
+        document.getElementById('start-time').value = now.toISOString().slice(0, 16);
+    </script>
+<script id="dhws-dataInjector" src="../public/dhws-data-injector.js"></script>
+</body>
+</html>

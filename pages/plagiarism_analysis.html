@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plagiarism Analysis - Local Coding Contest Platform</title>
+    <link rel="stylesheet" href="../css/main.css">
+  <script type="module" src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Flocalcodi4388back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.9"></script>
+  <script type="module" src="https://static.rocket.new/rocket-shot.js?v=0.0.1"></script>
+  </head>
+<body class="bg-background min-h-screen font-sans">
+    <!-- Navigation Header -->
+    <nav class="bg-surface shadow-card border-b border-secondary-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-4">
+                    <div class="flex-shrink-0">
+                        <svg class="h-8 w-8 text-primary" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                        </svg>
+                    </div>
+                    <h1 class="text-xl font-semibold text-text-primary">Contest Platform</h1>
+                </div>
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="contest_setup.html" class="text-text-secondary hover:text-primary transition-smooth px-3 py-2 rounded-lg hover:bg-secondary-100">Setup</a>
+                    <a href="contest_management.html" class="text-text-secondary hover:text-primary transition-smooth px-3 py-2 rounded-lg hover:bg-secondary-100">Management</a>
+                    <a href="participant_join.html" class="text-text-secondary hover:text-primary transition-smooth px-3 py-2 rounded-lg hover:bg-secondary-100">Join Contest</a>
+                    <a href="submission_dashboard.html" class="text-text-secondary hover:text-primary transition-smooth px-3 py-2 rounded-lg hover:bg-secondary-100">Dashboard</a>
+                    <a href="plagiarism_analysis.html" class="text-primary font-medium px-3 py-2 rounded-lg bg-primary-50">Analysis</a>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-text-secondary hover:text-primary p-2">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-surface border-t border-secondary-200">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="contest_setup.html" class="block px-3 py-2 text-text-secondary hover:text-primary hover:bg-secondary-100 rounded-lg">Setup</a>
+                <a href="contest_management.html" class="block px-3 py-2 text-text-secondary hover:text-primary hover:bg-secondary-100 rounded-lg">Management</a>
+                <a href="participant_join.html" class="block px-3 py-2 text-text-secondary hover:text-primary hover:bg-secondary-100 rounded-lg">Join Contest</a>
+                <a href="submission_dashboard.html" class="block px-3 py-2 text-text-secondary hover:text-primary hover:bg-secondary-100 rounded-lg">Dashboard</a>
+                <a href="plagiarism_analysis.html" class="block px-3 py-2 text-primary font-medium bg-primary-50 rounded-lg">Analysis</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Header Section -->
+        <div class="mb-8">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                    <h2 class="text-3xl font-semibold text-text-primary">Plagiarism Analysis</h2>
+                    <p class="text-text-secondary mt-1">Detect code similarities using JPlag integration</p>
+                </div>
+                <div class="mt-4 sm:mt-0 flex items-center space-x-3">
+                    <div class="flex items-center space-x-2">
+                        <div class="status-dot connected"></div>
+                        <span class="text-sm text-success font-medium">JPlag Server Connected</span>
+                    </div>
+                    <button id="refresh-analysis-btn" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-700 transition-smooth">
+                        <svg class="h-4 w-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                        </svg>
+                        Refresh Analysis
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analysis Controls -->
+        <div class="bg-surface rounded-xl shadow-card border border-secondary-200 mb-8">
+            <div class="p-6">
+                <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+                    <div class="flex-1">
+                        <h3 class="text-lg font-medium text-text-primary mb-4">Analysis Configuration</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <label for="similarity-threshold" class="block text-sm font-medium text-text-primary mb-2">Similarity Threshold</label>
+                                <select id="similarity-threshold" class="w-full px-3 py-2 border border-secondary-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-smooth">
+                                    <option value="50">50% and above</option>
+                                    <option value="60">60% and above</option>
+                                    <option value="70" selected>70% and above</option>
+                                    <option value="80">80% and above</option>
+                                    <option value="90">90% and above</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="language-filter" class="block text-sm font-medium text-text-primary mb-2">Language Filter</label>
+                                <select id="language-filter" class="w-full px-3 py-2 border border-secondary-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-smooth">
+                                    <option value="all">All Languages</option>
+                                    <option value="python">Python Only</option>
+                                    <option value="java">Java Only</option>
+                                    <option value="cpp">C++ Only</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="problem-filter" class="block text-sm font-medium text-text-primary mb-2">Problem Filter</label>
+                                <select id="problem-filter" class="w-full px-3 py-2 border border-secondary-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-smooth">
+                                    <option value="all">All Problems</option>
+                                    <option value="problem1">Problem 1</option>
+                                    <option value="problem2">Problem 2</option>
+                                    <option value="problem3">Problem 3</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <button id="run-analysis-btn" class="px-6 py-3 bg-accent text-white rounded-lg hover:bg-accent-600 transition-smooth">
+                            <svg class="h-4 w-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                            </svg>
+                            Run Analysis
+                        </button>
+                        <button id="export-report-btn" class="px-6 py-3 border border-secondary-300 text-text-primary rounded-lg hover:bg-secondary-50 transition-smooth">
+                            <svg class="h-4 w-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
+                            Export Report
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analysis Progress -->
+        <div id="analysis-progress" class="bg-surface rounded-xl shadow-card border border-secondary-200 mb-8 hidden">
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-medium text-text-primary">Analysis in Progress</h3>
+                    <span id="progress-percentage" class="text-sm text-text-secondary">0%</span>
+                </div>
+                <div class="w-full bg-secondary-200 rounded-full h-2 mb-4">
+                    <div id="progress-bar" class="progress-bar h-2 rounded-full" style="width: 0%"></div>
+                </div>
+                <p id="progress-status" class="text-sm text-text-secondary">Preparing submissions for analysis...</p>
+            </div>
+        </div>
+
+        <!-- Similarity Matrix -->
+        <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+            <!-- Matrix View -->
+            <div class="xl:col-span-2">
+                <div class="bg-surface rounded-xl shadow-card border border-secondary-200">
+                    <div class="p-6 border-b border-secondary-200">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-lg font-semibold text-text-primary">Similarity Matrix</h3>
+                            <div class="flex items-center space-x-2">
+                                <span class="text-sm text-text-secondary">Sort by:</span>
+                                <select id="sort-matrix" class="px-3 py-1 border border-secondary-300 rounded text-sm focus:ring-2 focus:ring-primary focus:border-primary transition-smooth">
+                                    <option value="similarity">Similarity %</option>
+                                    <option value="participant">Participant Name</option>
+                                    <option value="timestamp">Submission Time</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-6">
+                        <!-- Desktop Matrix View -->
+                        <div class="hidden md:block overflow-x-auto">
+                            <table class="w-full">
+                                <thead>
+                                    <tr class="border-b border-secondary-200">
+                                        <th class="text-left py-3 px-4 text-sm font-medium text-text-secondary">Participant A</th>
+                                        <th class="text-left py-3 px-4 text-sm font-medium text-text-secondary">Participant B</th>
+                                        <th class="text-left py-3 px-4 text-sm font-medium text-text-secondary">Problem</th>
+                                        <th class="text-left py-3 px-4 text-sm font-medium text-text-secondary">Similarity</th>
+                                        <th class="text-left py-3 px-4 text-sm font-medium text-text-secondary">Language</th>
+                                        <th class="text-left py-3 px-4 text-sm font-medium text-text-secondary">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="similarity-matrix" class="divide-y divide-secondary-200">
+                                    <!-- Matrix rows will be populated here -->
+                                    <tr class="hover:bg-secondary-50 transition-smooth">
+                                        <td class="py-4 px-4">
+                                            <div class="flex items-center space-x-3">
+                                                <img src="https://images.unsplash.com/photo-1710604885283-b598ca251936" alt="Profile picture of Alex Chen" class="h-8 w-8 rounded-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;">
+                                                <span class="text-sm font-medium text-text-primary">Alex Chen</span>
+                                            </div>
+                                        </td>
+                                        <td class="py-4 px-4">
+                                            <div class="flex items-center space-x-3">
+                                                <img src="https://images.unsplash.com/photo-1712307338604-0178c2f5dafa" alt="Profile picture of Sarah Kim" class="h-8 w-8 rounded-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;">
+                                                <span class="text-sm font-medium text-text-primary">Sarah Kim</span>
+                                            </div>
+                                        </td>
+                                        <td class="py-4 px-4 text-sm text-text-secondary">Problem 1</td>
+                                        <td class="py-4 px-4">
+                                            <div class="flex items-center space-x-2">
+                                                <span class="px-2 py-1 bg-error-100 text-error text-xs font-medium rounded-full">87%</span>
+                                                <div class="w-16 bg-secondary-200 rounded-full h-2">
+                                                    <div class="bg-error h-2 rounded-full" style="width: 87%"></div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="py-4 px-4">
+                                            <span class="px-2 py-1 bg-primary-100 text-primary text-xs font-medium rounded-full">Python</span>
+                                        </td>
+                                        <td class="py-4 px-4">
+                                            <button onclick="viewComparison('alex_chen', 'sarah_kim', 'problem1')" class="text-primary hover:text-primary-700 text-sm font-medium">
+                                                View Details
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-secondary-50 transition-smooth">
+                                        <td class="py-4 px-4">
+                                            <div class="flex items-center space-x-3">
+                                                <img src="https://images.unsplash.com/photo-1580863651276-3a1669b2e65a" alt="Profile picture of Mike Johnson" class="h-8 w-8 rounded-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;">
+                                                <span class="text-sm font-medium text-text-primary">Mike Johnson</span>
+                                            </div>
+                                        </td>
+                                        <td class="py-4 px-4">
+                                            <div class="flex items-center space-x-3">
+                                                <img src="https://images.unsplash.com/photo-1571864838730-8388a3d6817c" alt="Profile picture of Emma Davis" class="h-8 w-8 rounded-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;">
+                                                <span class="text-sm font-medium text-text-primary">Emma Davis</span>
+                                            </div>
+                                        </td>
+                                        <td class="py-4 px-4 text-sm text-text-secondary">Problem 2</td>
+                                        <td class="py-4 px-4">
+                                            <div class="flex items-center space-x-2">
+                                                <span class="px-2 py-1 bg-warning-100 text-warning text-xs font-medium rounded-full">74%</span>
+                                                <div class="w-16 bg-secondary-200 rounded-full h-2">
+                                                    <div class="bg-warning h-2 rounded-full" style="width: 74%"></div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="py-4 px-4">
+                                            <span class="px-2 py-1 bg-accent-100 text-accent text-xs font-medium rounded-full">Java</span>
+                                        </td>
+                                        <td class="py-4 px-4">
+                                            <button onclick="viewComparison('mike_johnson', 'emma_davis', 'problem2')" class="text-primary hover:text-primary-700 text-sm font-medium">
+                                                View Details
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Mobile Card View -->
+                        <div class="md:hidden space-y-4" id="mobile-similarity-cards">
+                            <div class="bg-background rounded-lg p-4 border border-secondary-200">
+                                <div class="flex items-center justify-between mb-3">
+                                    <div class="flex items-center space-x-2">
+                                        <span class="px-2 py-1 bg-error-100 text-error text-xs font-medium rounded-full">87%</span>
+                                        <span class="text-sm text-text-secondary">Problem 1</span>
+                                    </div>
+                                    <span class="px-2 py-1 bg-primary-100 text-primary text-xs font-medium rounded-full">Python</span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-3">
+                                        <img src="https://images.unsplash.com/photo-1710604885283-b598ca251936" alt="Profile picture of Alex Chen" class="h-8 w-8 rounded-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;">
+                                        <span class="text-sm font-medium text-text-primary">Alex Chen</span>
+                                    </div>
+                                    <svg class="h-4 w-4 text-text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01"/>
+                                    </svg>
+                                    <div class="flex items-center space-x-3">
+                                        <img src="https://images.unsplash.com/photo-1712307338604-0178c2f5dafa" alt="Profile picture of Sarah Kim" class="h-8 w-8 rounded-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;">
+                                        <span class="text-sm font-medium text-text-primary">Sarah Kim</span>
+                                    </div>
+                                </div>
+                                <button onclick="viewComparison('alex_chen', 'sarah_kim', 'problem1')" class="w-full mt-3 px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium">
+                                    View Comparison
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analysis Summary -->
+            <div class="xl:col-span-1">
+                <div class="bg-surface rounded-xl shadow-card border border-secondary-200 mb-6">
+                    <div class="p-6 border-b border-secondary-200">
+                        <h3 class="text-lg font-semibold text-text-primary">Analysis Summary</h3>
+                    </div>
+                    <div class="p-6 space-y-6">
+                        <div class="text-center">
+                            <div class="text-3xl font-semibold text-error mb-2">12</div>
+                            <p class="text-sm text-text-secondary">High Similarity Cases</p>
+                            <p class="text-xs text-text-secondary mt-1">(≥70% similarity)</p>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-text-secondary">Total Comparisons</span>
+                                <span class="text-sm font-medium text-text-primary">156</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-text-secondary">Participants Analyzed</span>
+                                <span class="text-sm font-medium text-text-primary">24</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-text-secondary">Problems Covered</span>
+                                <span class="text-sm font-medium text-text-primary">3</span>
+                            </div>
+                        </div>
+
+                        <div class="border-t border-secondary-200 pt-4">
+                            <h4 class="text-sm font-medium text-text-primary mb-3">Similarity Distribution</h4>
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs text-text-secondary">90-100%</span>
+                                    <div class="flex items-center space-x-2">
+                                        <div class="w-16 bg-secondary-200 rounded-full h-2">
+                                            <div class="bg-error h-2 rounded-full" style="width: 25%"></div>
+                                        </div>
+                                        <span class="text-xs text-text-secondary w-6">3</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs text-text-secondary">80-89%</span>
+                                    <div class="flex items-center space-x-2">
+                                        <div class="w-16 bg-secondary-200 rounded-full h-2">
+                                            <div class="bg-warning h-2 rounded-full" style="width: 50%"></div>
+                                        </div>
+                                        <span class="text-xs text-text-secondary w-6">6</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs text-text-secondary">70-79%</span>
+                                    <div class="flex items-center space-x-2">
+                                        <div class="w-16 bg-secondary-200 rounded-full h-2">
+                                            <div class="bg-accent h-2 rounded-full" style="width: 25%"></div>
+                                        </div>
+                                        <span class="text-xs text-text-secondary w-6">3</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="bg-surface rounded-xl shadow-card border border-secondary-200">
+                    <div class="p-6 border-b border-secondary-200">
+                        <h3 class="text-lg font-semibold text-text-primary">Quick Actions</h3>
+                    </div>
+                    <div class="p-6 space-y-3">
+                        <button class="w-full px-4 py-3 bg-error-100 text-error rounded-lg hover:bg-error-200 transition-smooth text-sm font-medium">
+                            <svg class="h-4 w-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 15.5c-.77.833.192 2.5 1.732 2.5z"/>
+                            </svg>
+                            Flag High Similarity Cases
+                        </button>
+                        <button class="w-full px-4 py-3 bg-secondary-100 text-text-primary rounded-lg hover:bg-secondary-200 transition-smooth text-sm font-medium">
+                            <svg class="h-4 w-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
+                            Generate Detailed Report
+                        </button>
+                        <button class="w-full px-4 py-3 bg-secondary-100 text-text-primary rounded-lg hover:bg-secondary-200 transition-smooth text-sm font-medium">
+                            <svg class="h-4 w-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"/>
+                            </svg>
+                            Share Analysis Results
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Comparison Modal -->
+    <div id="comparison-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-surface rounded-xl shadow-floating max-w-6xl w-full max-h-[90vh] overflow-hidden">
+                <div class="p-6 border-b border-secondary-200 flex items-center justify-between">
+                    <div>
+                        <h3 class="text-xl font-semibold text-text-primary">Code Comparison</h3>
+                        <p id="comparison-subtitle" class="text-text-secondary text-sm mt-1">Alex Chen vs Sarah Kim - Problem 1</p>
+                    </div>
+                    <button id="close-modal" class="text-text-secondary hover:text-text-primary p-2">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+                
+                <div class="p-6 overflow-y-auto max-h-[calc(90vh-120px)]">
+                    <!-- Similarity Score -->
+                    <div class="bg-error-100 rounded-lg p-4 mb-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h4 class="text-lg font-semibold text-error">87% Similarity Detected</h4>
+                                <p class="text-error text-sm mt-1">High similarity found in algorithm structure and variable naming</p>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-2xl font-bold text-error">87%</div>
+                                <div class="text-xs text-error">JPlag Score</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Code Comparison -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <!-- Participant A Code -->
+                        <div>
+                            <div class="flex items-center space-x-3 mb-3">
+                                <img src="https://images.unsplash.com/photo-1710604885283-b598ca251936" alt="Profile picture of Alex Chen" class="h-8 w-8 rounded-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;">
+                                <div>
+                                    <h5 class="font-medium text-text-primary">Alex Chen</h5>
+                                    <p class="text-xs text-text-secondary">Submitted: Oct 16, 2025 at 2:45 PM</p>
+                                </div>
+                            </div>
+                            <div class="code-block">
+                                <pre class="text-sm"><code>def solve_problem(arr):
+    # Sort the array first
+    sorted_arr = sorted(arr)
+    result = []
+    
+    for i in range(len(sorted_arr)):
+        if i == 0 or sorted_arr[i] != sorted_arr[i-1]:
+            result.append(sorted_arr[i])
+    
+    return result
+
+# Test the function
+input_data = [1, 2, 2, 3, 4, 4, 5]
+output = solve_problem(input_data)
+print(output)</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- Participant B Code -->
+                        <div>
+                            <div class="flex items-center space-x-3 mb-3">
+                                <img src="https://images.unsplash.com/photo-1712307338604-0178c2f5dafa" alt="Profile picture of Sarah Kim" class="h-8 w-8 rounded-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;">
+                                <div>
+                                    <h5 class="font-medium text-text-primary">Sarah Kim</h5>
+                                    <p class="text-xs text-text-secondary">Submitted: Oct 16, 2025 at 3:12 PM</p>
+                                </div>
+                            </div>
+                            <div class="code-block">
+                                <pre class="text-sm"><code>def solve_problem(input_arr):
+    # First, sort the input array
+    sorted_array = sorted(input_arr)
+    final_result = []
+    
+    for index in range(len(sorted_array)):
+        if index == 0 or sorted_array[index] != sorted_array[index-1]:
+            final_result.append(sorted_array[index])
+    
+    return final_result
+
+# Testing the solution
+test_input = [1, 2, 2, 3, 4, 4, 5]
+answer = solve_problem(test_input)
+print(answer)</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Similarity Details -->
+                    <div class="mt-6 bg-background rounded-lg p-4">
+                        <h4 class="font-medium text-text-primary mb-3">Similarity Analysis</h4>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-text-secondary">Algorithm Structure:</span>
+                                <span class="text-error font-medium">95% Similar</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-text-secondary">Variable Naming:</span>
+                                <span class="text-warning font-medium">78% Similar</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-text-secondary">Code Flow:</span>
+                                <span class="text-error font-medium">92% Similar</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-text-secondary">Comments & Style:</span>
+                                <span class="text-warning font-medium">65% Similar</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+
+        // Run analysis simulation
+        document.getElementById('run-analysis-btn').addEventListener('click', function() {
+            const progressSection = document.getElementById('analysis-progress');
+            const progressBar = document.getElementById('progress-bar');
+            const progressPercentage = document.getElementById('progress-percentage');
+            const progressStatus = document.getElementById('progress-status');
+            
+            progressSection.classList.remove('hidden');
+            
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 15;
+                if (progress > 100) progress = 100;
+                
+                progressBar.style.width = progress + '%';
+                progressPercentage.textContent = Math.round(progress) + '%';
+                
+                if (progress < 30) {
+                    progressStatus.textContent = 'Preparing submissions for analysis...';
+                } else if (progress < 60) {
+                    progressStatus.textContent = 'Running JPlag similarity detection...';
+                } else if (progress < 90) {
+                    progressStatus.textContent = 'Processing similarity results...';
+                } else if (progress < 100) {
+                    progressStatus.textContent = 'Finalizing analysis report...';
+                } else {
+                    progressStatus.textContent = 'Analysis complete!';
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        progressSection.classList.add('hidden');
+                    }, 2000);
+                }
+            }, 200);
+        });
+
+        // View comparison function
+        function viewComparison(participantA, participantB, problem) {
+            const modal = document.getElementById('comparison-modal');
+            const subtitle = document.getElementById('comparison-subtitle');
+            
+            // Format participant names
+            const nameA = participantA.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase());
+            const nameB = participantB.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase());
+            const problemName = problem.replace('problem', 'Problem ');
+            
+            subtitle.textContent = `${nameA} vs ${nameB} - ${problemName}`;
+            modal.classList.remove('hidden');
+        }
+
+        // Close modal
+        document.getElementById('close-modal').addEventListener('click', function() {
+            document.getElementById('comparison-modal').classList.add('hidden');
+        });
+
+        // Close modal on backdrop click
+        document.getElementById('comparison-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.classList.add('hidden');
+            }
+        });
+
+        // Export report
+        document.getElementById('export-report-btn').addEventListener('click', function() {
+            // Simulate report generation
+            const button = this;
+            const originalText = button.innerHTML;
+            
+            button.innerHTML = `
+                <svg class="h-4 w-4 inline mr-2 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                </svg>
+                Generating...
+            `;
+            button.disabled = true;
+            
+            setTimeout(() => {
+                button.innerHTML = originalText;
+                button.disabled = false;
+                
+                // Simulate download
+                const link = document.createElement('a');
+                link.href = 'data:text/plain;charset=utf-8,Plagiarism Analysis Report\nGenerated: ' + new Date().toLocaleString();
+                link.download = 'plagiarism_report_' + new Date().toISOString().split('T')[0] + '.txt';
+                link.click();
+            }, 2000);
+        });
+
+        // Filter functionality
+        document.getElementById('similarity-threshold').addEventListener('change', function() {
+            // Simulate filtering - in real app, this would filter the matrix
+            console.log('Filtering by threshold:', this.value);
+        });
+
+        document.getElementById('language-filter').addEventListener('change', function() {
+            console.log('Filtering by language:', this.value);
+        });
+
+        document.getElementById('problem-filter').addEventListener('change', function() {
+            console.log('Filtering by problem:', this.value);
+        });
+
+        // Sort functionality
+        document.getElementById('sort-matrix').addEventListener('change', function() {
+            console.log('Sorting by:', this.value);
+        });
+
+        // Refresh analysis
+        document.getElementById('refresh-analysis-btn').addEventListener('click', function() {
+            const button = this;
+            const originalText = button.innerHTML;
+            
+            button.innerHTML = `
+                <svg class="h-4 w-4 inline mr-2 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                </svg>
+                Refreshing...
+            `;
+            button.disabled = true;
+            
+            setTimeout(() => {
+                button.innerHTML = originalText;
+                button.disabled = false;
+            }, 1500);
+        });
+    </script>
+<script id="dhws-dataInjector" src="../public/dhws-data-injector.js"></script>
+</body>
+</html>

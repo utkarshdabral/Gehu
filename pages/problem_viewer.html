@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Problem Viewer - Local Coding Contest Platform</title>
+    <link rel="stylesheet" href="../css/main.css">
+  <script type="module" src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Flocalcodi4388back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.9"></script>
+  <script type="module" src="https://static.rocket.new/rocket-shot.js?v=0.0.1"></script>
+  </head>
+<body class="bg-background min-h-screen font-sans">
+    <!-- Navigation Header -->
+    <nav class="bg-surface shadow-card border-b border-secondary-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-4">
+                    <div class="flex-shrink-0">
+                        <svg class="h-8 w-8 text-primary" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                        </svg>
+                    </div>
+                    <h1 class="text-xl font-semibold text-text-primary">Contest Platform</h1>
+                </div>
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="contest_setup.html" class="text-text-secondary hover:text-primary transition-smooth px-3 py-2 rounded-lg hover:bg-secondary-100">Setup</a>
+                    <a href="contest_management.html" class="text-text-secondary hover:text-primary transition-smooth px-3 py-2 rounded-lg hover:bg-secondary-100">Management</a>
+                    <a href="participant_join.html" class="text-text-secondary hover:text-primary transition-smooth px-3 py-2 rounded-lg hover:bg-secondary-100">Join Contest</a>
+                    <a href="problem_viewer.html" class="text-primary font-medium px-3 py-2 rounded-lg bg-primary-50">Problems</a>
+                    <a href="submission_dashboard.html" class="text-text-secondary hover:text-primary transition-smooth px-3 py-2 rounded-lg hover:bg-secondary-100">Dashboard</a>
+                    <a href="plagiarism_analysis.html" class="text-text-secondary hover:text-primary transition-smooth px-3 py-2 rounded-lg hover:bg-secondary-100">Analysis</a>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-text-secondary hover:text-primary p-2">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-surface border-t border-secondary-200">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="contest_setup.html" class="block px-3 py-2 text-text-secondary hover:text-primary hover:bg-secondary-100 rounded-lg">Setup</a>
+                <a href="contest_management.html" class="block px-3 py-2 text-text-secondary hover:text-primary hover:bg-secondary-100 rounded-lg">Management</a>
+                <a href="participant_join.html" class="block px-3 py-2 text-text-secondary hover:text-primary hover:bg-secondary-100 rounded-lg">Join Contest</a>
+                <a href="problem_viewer.html" class="block px-3 py-2 text-primary font-medium bg-primary-50 rounded-lg">Problems</a>
+                <a href="submission_dashboard.html" class="block px-3 py-2 text-text-secondary hover:text-primary hover:bg-secondary-100 rounded-lg">Dashboard</a>
+                <a href="plagiarism_analysis.html" class="block px-3 py-2 text-text-secondary hover:text-primary hover:bg-secondary-100 rounded-lg">Analysis</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contest Status Bar -->
+    <div class="bg-primary text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center space-x-2">
+                        <div class="status-dot connected"></div>
+                        <span class="text-sm font-medium">Connected to Contest</span>
+                    </div>
+                    <div class="text-sm">
+                        <span class="font-medium">Algorithm Challenge 2025</span>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-6 text-sm">
+                    <div class="flex items-center space-x-2">
+                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <span id="contest-timer">1:23:45 remaining</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                        <span>3 problems</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Tab Navigation -->
+    <div class="md:hidden bg-surface border-b border-secondary-200">
+        <div class="flex">
+            <button id="problems-tab" class="flex-1 px-4 py-3 text-center text-primary font-medium border-b-2 border-primary bg-primary-50">
+                Problems
+            </button>
+            <button id="submission-tab" class="flex-1 px-4 py-3 text-center text-text-secondary border-b-2 border-transparent">
+                Submit Solution
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Problems Panel -->
+            <div id="problems-panel" class="space-y-6">
+                <!-- Problem Selection -->
+                <div class="bg-surface rounded-xl shadow-card border border-secondary-200">
+                    <div class="p-4 border-b border-secondary-200">
+                        <div class="flex items-center justify-between">
+                            <h2 class="text-lg font-semibold text-text-primary">Contest Problems</h2>
+                            <div class="flex items-center space-x-2">
+                                <div class="status-dot connected"></div>
+                                <span class="text-sm text-text-secondary">Synced</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-4">
+                        <div class="space-y-3">
+                            <div class="problem-item active border-2 border-primary bg-primary-50 rounded-lg p-4 cursor-pointer" data-problem="1">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <h3 class="font-medium text-text-primary">Problem A: Two Sum</h3>
+                                        <p class="text-sm text-text-secondary mt-1">Array manipulation, Hash tables</p>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <span class="px-2 py-1 bg-success-100 text-success text-xs rounded-full">Downloaded</span>
+                                        <svg class="h-5 w-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="problem-item border border-secondary-200 rounded-lg p-4 cursor-pointer hover:bg-secondary-50 transition-smooth" data-problem="2">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <h3 class="font-medium text-text-primary">Problem B: Binary Tree Traversal</h3>
+                                        <p class="text-sm text-text-secondary mt-1">Trees, Recursion, DFS</p>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <button class="download-btn px-3 py-1 bg-accent text-white text-xs rounded-full hover:bg-accent-600 transition-smooth">
+                                            Download
+                                        </button>
+                                        <svg class="h-5 w-5 text-text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="problem-item border border-secondary-200 rounded-lg p-4 cursor-pointer hover:bg-secondary-50 transition-smooth" data-problem="3">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <h3 class="font-medium text-text-primary">Problem C: Dynamic Programming</h3>
+                                        <p class="text-sm text-text-secondary mt-1">DP, Optimization, Memoization</p>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <button class="download-btn px-3 py-1 bg-accent text-white text-xs rounded-full hover:bg-accent-600 transition-smooth">
+                                            Download
+                                        </button>
+                                        <svg class="h-5 w-5 text-text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Problem Statement -->
+                <div class="bg-surface rounded-xl shadow-card border border-secondary-200">
+                    <div class="p-4 border-b border-secondary-200">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-lg font-semibold text-text-primary">Problem A: Two Sum</h3>
+                            <div class="flex items-center space-x-2">
+                                <span class="px-2 py-1 bg-warning-100 text-warning text-xs rounded-full">Medium</span>
+                                <button id="download-files-btn" class="px-3 py-1 bg-primary text-white text-sm rounded-lg hover:bg-primary-700 transition-smooth">
+                                    <svg class="h-4 w-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                    </svg>
+                                    Download Files
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-6 space-y-6">
+                        <!-- Problem Description -->
+                        <div class="prose max-w-none">
+                            <h4 class="text-base font-medium text-text-primary mb-3">Problem Description</h4>
+                            <p class="text-text-secondary leading-relaxed">
+                                Given an array of integers <code class="bg-secondary-100 px-1 py-0.5 rounded text-sm">nums</code> and an integer <code class="bg-secondary-100 px-1 py-0.5 rounded text-sm">target</code>, 
+                                return indices of the two numbers such that they add up to target.
+                            </p>
+                            <p class="text-text-secondary leading-relaxed mt-3">
+                                You may assume that each input would have exactly one solution, and you may not use the same element twice.
+                                You can return the answer in any order.
+                            </p>
+                        </div>
+
+                        <!-- Examples -->
+                        <div>
+                            <h4 class="text-base font-medium text-text-primary mb-3">Examples</h4>
+                            <div class="space-y-4">
+                                <div class="bg-background rounded-lg p-4 border border-secondary-200">
+                                    <div class="text-sm font-medium text-text-primary mb-2">Example 1:</div>
+                                    <div class="code-block text-sm">
+                                        <div><strong>Input:</strong> nums = [2,7,11,15], target = 9</div>
+                                        <div><strong>Output:</strong> [0,1]</div>
+                                        <div><strong>Explanation:</strong> Because nums[0] + nums[1] == 9, we return [0, 1].</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="bg-background rounded-lg p-4 border border-secondary-200">
+                                    <div class="text-sm font-medium text-text-primary mb-2">Example 2:</div>
+                                    <div class="code-block text-sm">
+                                        <div><strong>Input:</strong> nums = [3,2,4], target = 6</div>
+                                        <div><strong>Output:</strong> [1,2]</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Constraints -->
+                        <div>
+                            <h4 class="text-base font-medium text-text-primary mb-3">Constraints</h4>
+                            <ul class="text-text-secondary text-sm space-y-1 list-disc list-inside">
+                                <li>2 ≤ nums.length ≤ 10⁴</li>
+                                <li>-10⁹ ≤ nums[i] ≤ 10⁹</li>
+                                <li>-10⁹ ≤ target ≤ 10⁹</li>
+                                <li>Only one valid answer exists.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Test Files -->
+                        <div>
+                            <h4 class="text-base font-medium text-text-primary mb-3">Test Files</h4>
+                            <div class="space-y-2">
+                                <div class="flex items-center justify-between p-3 bg-background rounded-lg border border-secondary-200">
+                                    <div class="flex items-center space-x-3">
+                                        <svg class="h-5 w-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                        </svg>
+                                        <div>
+                                            <p class="text-sm font-medium text-text-primary">input.txt</p>
+                                            <p class="text-xs text-text-secondary">Sample input cases</p>
+                                        </div>
+                                    </div>
+                                    <button class="px-3 py-1 bg-accent text-white text-xs rounded-full hover:bg-accent-600 transition-smooth">
+                                        Download
+                                    </button>
+                                </div>
+                                
+                                <div class="flex items-center justify-between p-3 bg-background rounded-lg border border-secondary-200">
+                                    <div class="flex items-center space-x-3">
+                                        <svg class="h-5 w-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                        </svg>
+                                        <div>
+                                            <p class="text-sm font-medium text-text-primary">expected_output.txt</p>
+                                            <p class="text-xs text-text-secondary">Expected output format</p>
+                                        </div>
+                                    </div>
+                                    <button class="px-3 py-1 bg-accent text-white text-xs rounded-full hover:bg-accent-600 transition-smooth">
+                                        Download
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submission Panel -->
+            <div id="submission-panel" class="space-y-6">
+                <!-- Code Editor -->
+                <div class="bg-surface rounded-xl shadow-card border border-secondary-200">
+                    <div class="p-4 border-b border-secondary-200">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-lg font-semibold text-text-primary">Solution Editor</h3>
+                            <div class="flex items-center space-x-3">
+                                <select id="language-select" class="px-3 py-1 border border-secondary-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:border-primary">
+                                    <option value="python">Python</option>
+                                    <option value="java">Java</option>
+                                    <option value="cpp">C++</option>
+                                    <option value="javascript">JavaScript</option>
+                                </select>
+                                <button id="auto-save-toggle" class="flex items-center space-x-1 px-3 py-1 bg-success-100 text-success text-sm rounded-lg">
+                                    <div class="status-dot connected"></div>
+                                    <span>Auto-save</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-4">
+                        <div class="relative">
+                            <textarea id="code-editor" 
+                                      class="w-full h-64 p-4 font-mono text-sm border border-secondary-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary resize-none"
+                                      placeholder="# Write your solution here...
+def twoSum(nums, target):
+    # Your code here
+    pass"
+                                      spellcheck="false"></textarea>
+                            <div class="absolute bottom-2 right-2 text-xs text-text-secondary">
+                                <span id="line-count">Lines: 1</span> | 
+                                <span id="char-count">Chars: 0</span>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center justify-between mt-4">
+                            <div class="flex items-center space-x-2 text-sm text-text-secondary">
+                                <svg class="h-4 w-4 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                <span>Last saved: 2 minutes ago</span>
+                            </div>
+                            <button id="save-progress-btn" class="px-4 py-2 bg-secondary-100 text-text-primary rounded-lg hover:bg-secondary-200 transition-smooth">
+                                Save Progress
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- File Upload Alternative -->
+                <div class="bg-surface rounded-xl shadow-card border border-secondary-200">
+                    <div class="p-4 border-b border-secondary-200">
+                        <h3 class="text-lg font-semibold text-text-primary">Upload Solution File</h3>
+                        <p class="text-text-secondary text-sm mt-1">Alternative to code editor - upload your solution file</p>
+                    </div>
+                    
+                    <div class="p-4">
+                        <div class="border-2 border-dashed border-secondary-300 rounded-lg p-6 text-center hover:border-primary transition-smooth" id="file-drop-zone">
+                            <svg class="mx-auto h-12 w-12 text-secondary-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                            </svg>
+                            <p class="text-text-primary font-medium mb-2">Drop solution file here or click to browse</p>
+                            <p class="text-text-secondary text-sm mb-4">Supports .py, .java, .cpp, .js files up to 5MB</p>
+                            <input type="file" id="solution-file" accept=".py,.java,.cpp,.js,.c,.go" class="hidden">
+                            <button type="button" onclick="document.getElementById('solution-file').click()" 
+                                    class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-700 transition-smooth">
+                                Browse Files
+                            </button>
+                        </div>
+                        
+                        <div id="upload-progress" class="hidden mt-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-sm font-medium text-text-primary">Uploading solution...</span>
+                                <span class="text-sm text-text-secondary">75%</span>
+                            </div>
+                            <div class="w-full bg-secondary-200 rounded-full h-2">
+                                <div class="progress-bar h-2 rounded-full" style="width: 75%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submission History -->
+                <div class="bg-surface rounded-xl shadow-card border border-secondary-200">
+                    <div class="p-4 border-b border-secondary-200">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-lg font-semibold text-text-primary">Submission History</h3>
+                            <span class="text-sm text-text-secondary">2 submissions</span>
+                        </div>
+                    </div>
+                    
+                    <div class="p-4">
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between p-3 bg-success-50 border border-success-200 rounded-lg">
+                                <div class="flex items-center space-x-3">
+                                    <div class="status-dot connected"></div>
+                                    <div>
+                                        <p class="text-sm font-medium text-text-primary">solution.py</p>
+                                        <p class="text-xs text-text-secondary">Submitted 15 minutes ago</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <span class="px-2 py-1 bg-success text-white text-xs rounded-full">Submitted</span>
+                                    <button class="text-text-secondary hover:text-primary p-1">
+                                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center justify-between p-3 bg-background border border-secondary-200 rounded-lg">
+                                <div class="flex items-center space-x-3">
+                                    <div class="status-dot connecting"></div>
+                                    <div>
+                                        <p class="text-sm font-medium text-text-primary">solution_v1.py</p>
+                                        <p class="text-xs text-text-secondary">Submitted 32 minutes ago</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <span class="px-2 py-1 bg-warning text-white text-xs rounded-full">Processing</span>
+                                    <button class="text-text-secondary hover:text-primary p-1">
+                                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="bg-surface rounded-xl shadow-card border border-secondary-200">
+                    <div class="p-6">
+                        <div class="flex flex-col space-y-4">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h4 class="text-base font-medium text-text-primary">Ready to Submit?</h4>
+                                    <p class="text-text-secondary text-sm mt-1">Make sure your solution is complete and tested</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-sm text-text-secondary">Submissions left</p>
+                                    <p class="text-lg font-semibold text-primary">Unlimited</p>
+                                </div>
+                            </div>
+                            
+                            <button id="submit-solution-btn" class="w-full px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary-700 transition-smooth font-medium">
+                                <svg class="h-5 w-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+                                </svg>
+                                Submit Solution
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Connection Status Modal -->
+    <div id="connection-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-surface rounded-xl shadow-floating max-w-md w-full mx-4 p-6">
+            <div class="text-center">
+                <div class="status-dot connecting mx-auto mb-4" style="width: 24px; height: 24px;"></div>
+                <h3 class="text-lg font-semibold text-text-primary mb-2">Reconnecting...</h3>
+                <p class="text-text-secondary text-sm mb-4">Lost connection to contest. Attempting to reconnect via WebRTC.</p>
+                <div class="flex space-x-3">
+                    <button id="retry-connection" class="flex-1 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-700 transition-smooth">
+                        Retry
+                    </button>
+                    <button id="manual-connection" class="flex-1 px-4 py-2 border border-secondary-300 text-text-primary rounded-lg hover:bg-secondary-50 transition-smooth">
+                        Manual Setup
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+
+        // Mobile tab navigation
+        const problemsTab = document.getElementById('problems-tab');
+        const submissionTab = document.getElementById('submission-tab');
+        const problemsPanel = document.getElementById('problems-panel');
+        const submissionPanel = document.getElementById('submission-panel');
+
+        function showProblemsTab() {
+            problemsTab.classList.add('text-primary', 'font-medium', 'border-primary', 'bg-primary-50');
+            problemsTab.classList.remove('text-text-secondary', 'border-transparent');
+            submissionTab.classList.add('text-text-secondary', 'border-transparent');
+            submissionTab.classList.remove('text-primary', 'font-medium', 'border-primary', 'bg-primary-50');
+            
+            if (window.innerWidth < 768) {
+                problemsPanel.classList.remove('hidden');
+                submissionPanel.classList.add('hidden');
+            }
+        }
+
+        function showSubmissionTab() {
+            submissionTab.classList.add('text-primary', 'font-medium', 'border-primary', 'bg-primary-50');
+            submissionTab.classList.remove('text-text-secondary', 'border-transparent');
+            problemsTab.classList.add('text-text-secondary', 'border-transparent');
+            problemsTab.classList.remove('text-primary', 'font-medium', 'border-primary', 'bg-primary-50');
+            
+            if (window.innerWidth < 768) {
+                submissionPanel.classList.remove('hidden');
+                problemsPanel.classList.add('hidden');
+            }
+        }
+
+        problemsTab.addEventListener('click', showProblemsTab);
+        submissionTab.addEventListener('click', showSubmissionTab);
+
+        // Handle responsive layout
+        function handleResize() {
+            if (window.innerWidth >= 768) {
+                problemsPanel.classList.remove('hidden');
+                submissionPanel.classList.remove('hidden');
+            } else {
+                if (problemsTab.classList.contains('text-primary')) {
+                    submissionPanel.classList.add('hidden');
+                } else {
+                    problemsPanel.classList.add('hidden');
+                }
+            }
+        }
+
+        window.addEventListener('resize', handleResize);
+        handleResize();
+
+        // Problem selection
+        document.querySelectorAll('.problem-item').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.problem-item').forEach(p => {
+                    p.classList.remove('active', 'border-primary', 'bg-primary-50');
+                    p.classList.add('border-secondary-200');
+                });
+                this.classList.add('active', 'border-primary', 'bg-primary-50');
+                this.classList.remove('border-secondary-200');
+            });
+        });
+
+        // Download buttons
+        document.querySelectorAll('.download-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const originalText = this.textContent;
+                this.textContent = 'Downloading...';
+                this.disabled = true;
+                
+                setTimeout(() => {
+                    this.textContent = 'Downloaded';
+                    this.classList.remove('bg-accent', 'hover:bg-accent-600');
+                    this.classList.add('bg-success', 'text-white');
+                    
+                    setTimeout(() => {
+                        this.textContent = originalText;
+                        this.disabled = false;
+                        this.classList.remove('bg-success');
+                        this.classList.add('bg-accent', 'hover:bg-accent-600');
+                    }, 2000);
+                }, 1500);
+            });
+        });
+
+        // Code editor functionality
+        const codeEditor = document.getElementById('code-editor');
+        const lineCount = document.getElementById('line-count');
+        const charCount = document.getElementById('char-count');
+
+        codeEditor.addEventListener('input', function() {
+            const lines = this.value.split('\n').length;
+            const chars = this.value.length;
+            lineCount.textContent = `Lines: ${lines}`;
+            charCount.textContent = `Chars: ${chars}`;
+            
+            // Auto-save simulation
+            clearTimeout(window.autoSaveTimeout);
+            window.autoSaveTimeout = setTimeout(() => {
+                document.querySelector('.text-success span').textContent = 'Last saved: Just now';
+            }, 2000);
+        });
+
+        // Language selection
+        document.getElementById('language-select').addEventListener('change', function() {
+            const templates = {
+                python: '# Write your solution here...\ndef twoSum(nums, target):\n    # Your code here\n    pass',
+                java: '// Write your solution here...\npublic class Solution {\n    public int[] twoSum(int[] nums, int target) {\n        // Your code here\n        return new int[]{};\n    }\n}',
+                cpp: '// Write your solution here...\n#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<int> twoSum(vector<int>& nums, int target) {\n        // Your code here\n        return {};\n    }\n};',
+                javascript: '// Write your solution here...\nfunction twoSum(nums, target) {\n    // Your code here\n    return [];\n}'
+            };
+            codeEditor.value = templates[this.value] || '';
+            codeEditor.dispatchEvent(new Event('input'));
+        });
+
+        // File upload handling
+        const fileDropZone = document.getElementById('file-drop-zone');
+        const solutionFile = document.getElementById('solution-file');
+        const uploadProgress = document.getElementById('upload-progress');
+
+        fileDropZone.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.classList.add('border-primary', 'bg-primary-50');
+        });
+
+        fileDropZone.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            this.classList.remove('border-primary', 'bg-primary-50');
+        });
+
+        fileDropZone.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.classList.remove('border-primary', 'bg-primary-50');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFileUpload(files[0]);
+            }
+        });
+
+        solutionFile.addEventListener('change', function() {
+            if (this.files.length > 0) {
+                handleFileUpload(this.files[0]);
+            }
+        });
+
+        function handleFileUpload(file) {
+            uploadProgress.classList.remove('hidden');
+            let progress = 0;
+            const progressBar = uploadProgress.querySelector('.progress-bar');
+            const progressText = uploadProgress.querySelector('.text-text-secondary');
+            
+            const interval = setInterval(() => {
+                progress += Math.random() * 20;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        uploadProgress.classList.add('hidden');
+                        alert('File uploaded successfully!');
+                    }, 500);
+                }
+                progressBar.style.width = progress + '%';
+                progressText.textContent = Math.round(progress) + '%';
+            }, 200);
+        }
+
+        // Submit solution
+        document.getElementById('submit-solution-btn').addEventListener('click', function() {
+            const code = codeEditor.value.trim();
+            const file = solutionFile.files[0];
+            
+            if (!code && !file) {
+                alert('Please write code in the editor or upload a solution file.');
+                return;
+            }
+            
+            this.disabled = true;
+            this.innerHTML = '<svg class="h-5 w-5 inline mr-2 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>Submitting...';
+            
+            setTimeout(() => {
+                this.disabled = false;
+                this.innerHTML = '<svg class="h-5 w-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>Submit Solution';
+                alert('Solution submitted successfully via P2P transfer!');
+                
+                // Add to submission history
+                const historyContainer = document.querySelector('#submission-panel .space-y-3');
+                const newSubmission = document.createElement('div');
+                newSubmission.className = 'flex items-center justify-between p-3 bg-warning-50 border border-warning-200 rounded-lg';
+                newSubmission.innerHTML = `
+                    <div class="flex items-center space-x-3">
+                        <div class="status-dot connecting"></div>
+                        <div>
+                            <p class="text-sm font-medium text-text-primary">solution_latest.py</p>
+                            <p class="text-xs text-text-secondary">Submitted just now</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="px-2 py-1 bg-warning text-white text-xs rounded-full">Uploading</span>
+                        <button class="text-text-secondary hover:text-primary p-1">
+                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"/>
+                            </svg>
+                        </button>
+                    </div>
+                `;
+                historyContainer.insertBefore(newSubmission, historyContainer.firstChild);
+            }, 2000);
+        });
+
+        // Contest timer
+        function updateTimer() {
+            const timer = document.getElementById('contest-timer');
+            const timeLeft = timer.textContent;
+            const parts = timeLeft.split(':');
+            let hours = parseInt(parts[0]);
+            let minutes = parseInt(parts[1]);
+            let seconds = parseInt(parts[2].split(' ')[0]);
+            
+            seconds--;
+            if (seconds < 0) {
+                seconds = 59;
+                minutes--;
+                if (minutes < 0) {
+                    minutes = 59;
+                    hours--;
+                }
+            }
+            
+            if (hours >= 0) {
+                timer.textContent = `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')} remaining`;
+            }
+        }
+
+        setInterval(updateTimer, 1000);
+
+        // Connection status simulation
+        function simulateConnectionIssue() {
+            const modal = document.getElementById('connection-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            
+            document.getElementById('retry-connection').addEventListener('click', function() {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            });
+            
+            document.getElementById('manual-connection').addEventListener('click', function() {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+                alert('Manual connection setup would open here...');
+            });
+        }
+
+        // Simulate occasional connection issues
+        setTimeout(simulateConnectionIssue, 30000);
+    </script>
+<script id="dhws-dataInjector" src="../public/dhws-data-injector.js"></script>
+</body>
+</html>
